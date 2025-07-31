@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="543.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.IJSE.javafxapplication.controller.EmployeePageController">
+   <children>
+      <HBox layoutX="-2.0" prefHeight="43.0" prefWidth="600.0">
+         <children>
+            <AnchorPane prefHeight="43.0" prefWidth="601.0">
+               <children>
+                  <Label layoutX="222.0" layoutY="8.0" text="Manage Employee">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="43.0" prefHeight="37.0" prefWidth="1263.0">
+         <children>
+            <AnchorPane prefHeight="37.0" prefWidth="985.0">
+               <children>
+                  <Label fx:id="lblEmpID" layoutX="38.0" layoutY="10.0" text="Emp ID" />
+                  <TextField fx:id="txtEmpID" editable="false" layoutX="113.0" layoutY="6.0" prefHeight="26.0" prefWidth="1117.0" promptText="Employee ID" style="-fx-background-color: #fff; -fx-border-color: #099259; -fx-border-width: 0 0 1px 0;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="81.0" prefHeight="37.0" prefWidth="1230.0">
+         <children>
+            <AnchorPane prefHeight="31.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="lblName" layoutX="38.0" layoutY="10.0" text="Name" />
+                  <TextField fx:id="txtEmpName" layoutX="113.0" layoutY="6.0" prefHeight="26.0" prefWidth="1117.0" promptText="Name" style="-fx-background-color: #fff; -fx-border-color: #099259; -fx-border-width: 0 0 1px 0;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="119.0" prefHeight="37.0" prefWidth="1230.0">
+         <children>
+            <AnchorPane prefHeight="31.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="lblPhone" layoutX="38.0" layoutY="10.0" text="Phone" />
+                  <TextField fx:id="txtEmpPhone" layoutX="113.0" layoutY="6.0" prefHeight="26.0" prefWidth="1117.0" promptText="07x xxxxxxx" style="-fx-background-color: #fff; -fx-border-color: #099259; -fx-border-width: 0 0 1px 0;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="162.0" prefHeight="37.0" prefWidth="1230.0">
+         <children>
+            <AnchorPane prefHeight="31.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="lblEmail" layoutX="38.0" layoutY="10.0" text="Email" />
+                  <TextField fx:id="txtEmpEmail" layoutX="113.0" layoutY="6.0" prefHeight="26.0" prefWidth="1117.0" promptText="example@gmail.com" style="-fx-background-color: #fff; -fx-border-color: #099259; -fx-border-width: 0 0 1px 0;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="200.0" prefHeight="37.0" prefWidth="1230.0">
+         <children>
+            <AnchorPane prefHeight="31.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="lblAddress" layoutX="31.0" layoutY="10.0" text="Address" />
+                  <TextField fx:id="txtEmpAddress" layoutX="113.0" layoutY="6.0" prefHeight="26.0" prefWidth="1117.0" promptText="Address" style="-fx-background-color: #fff; -fx-border-color: #099259; -fx-border-width: 0 0 1px 0;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="238.0" prefHeight="37.0" prefWidth="1230.0">
+         <children>
+            <AnchorPane prefHeight="31.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="lblEmpDuty" layoutX="38.0" layoutY="6.0" text="Duty" />
+                  <TextField fx:id="txtEmpRole" layoutX="113.0" layoutY="6.0" prefHeight="26.0" prefWidth="1117.0" promptText="Duty" style="-fx-background-color: #fff; -fx-border-color: #099259; -fx-border-width: 0 0 1px 0;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox layoutY="276.0" prefHeight="27.0" prefWidth="600.0">
+         <children>
+            <AnchorPane prefHeight="27.0" prefWidth="601.0">
+               <children>
+                  <Button layoutX="29.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnGenerateReport" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: #778CA3;" text="Generate Report" textFill="WHITE" />
+                  <Button layoutX="192.0" layoutY="1.0" mnemonicParsing="false" onAction="#btnReset" prefHeight="26.0" prefWidth="77.0" style="-fx-background-color: #FC5C65;" text="Reset" textFill="WHITE" />
+                  <Button layoutX="294.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnDelete" prefHeight="26.0" prefWidth="78.0" style="-fx-background-color: #EB3B5A;" text="Delete" textFill="WHITE" />
+                  <Button layoutX="407.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="26.0" prefWidth="78.0" style="-fx-background-color: #2D98DA;" text="Update" textFill="WHITE" />
+                  <Button layoutX="512.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #26DE81;" text="Save" textFill="WHITE" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <TableView fx:id="table" layoutY="314.0" prefHeight="225.0" prefWidth="1280.0" stylesheets="@../Ui%20Css/TableView.css">
+        <columns>
+          <TableColumn fx:id="tabEmpID" prefWidth="75.0" text="Emp ID" />
+          <TableColumn fx:id="tabName" prefWidth="91.19995880126953" text="Name" />
+            <TableColumn fx:id="tabPhone" prefWidth="109.0" text="Phone" />
+            <TableColumn fx:id="tabEmaail" prefWidth="177.0" text="Duty" />
+            <TableColumn fx:id="tabAddress" prefWidth="302.0" text="                         Email" />
+            <TableColumn fx:id="tabDuty" prefWidth="279.0" text="                                Address" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

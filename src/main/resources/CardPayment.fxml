@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="lk.IJSE.javafxapplication.controller.CardPaymentController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <GridPane fx:id="rootGrid" layoutX="40.0" layoutY="30.0" hgap="15" vgap="12"
+              AnchorPane.topAnchor="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+
+        <columnConstraints>
+            <ColumnConstraints prefWidth="140" hgrow="SOMETIMES"/>
+            <ColumnConstraints prefWidth="260" hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints prefHeight="40" vgrow="SOMETIMES"/>
+            <RowConstraints prefHeight="40" vgrow="SOMETIMES"/>
+            <RowConstraints prefHeight="40" vgrow="SOMETIMES"/>
+            <RowConstraints prefHeight="40" vgrow="SOMETIMES"/>
+            <RowConstraints prefHeight="40" vgrow="SOMETIMES"/>
+            <RowConstraints prefHeight="50" vgrow="SOMETIMES"/>
+        </rowConstraints>
+
+        <!-- Title -->
+        <Label text="Card Payment" style="-fx-font-size: 20px; -fx-font-weight: bold;"
+               GridPane.halignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="0"/>
+
+        <!-- Amount -->
+        <Label text="Amount :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="lblAmount" text="Rs. 0.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Card Number -->
+        <Label text="Card Number :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtCardNumber" promptText="#### #### #### ####"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- Name on Card -->
+        <Label text="Name on Card :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtName" promptText="As printed on card"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <!-- Expiry Date -->
+        <Label text="Expiry Date :" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
+            <ComboBox fx:id="cmbMonth" prefWidth="100"/>
+            <ComboBox fx:id="cmbYear" prefWidth="100"/>
+        </HBox>
+
+        <!-- CVV -->
+        <Label text="CVV :" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <PasswordField fx:id="txtCVV" promptText="•••" prefWidth="80"
+                       GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <!-- Buttons -->
+        <HBox spacing="10" alignment="CENTER_RIGHT" GridPane.rowIndex="6" GridPane.columnIndex="1">
+            <Button fx:id="btnPay" text="Pay" defaultButton="true"/>
+            <Button fx:id="btnCancel" text="Cancel" cancelButton="true"/>
+        </HBox>
+    </GridPane>
+</AnchorPane>
