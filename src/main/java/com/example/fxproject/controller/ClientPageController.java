@@ -61,6 +61,8 @@ class ClientPageController {
         ColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         columnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
+        loadTableData();
+
     }
 
     private void setDataToFields(Object newSelection) {
@@ -92,6 +94,7 @@ class ClientPageController {
 //            return new ClientDTO(clientID, name, phone, email, address);
 //        }
         return null;
+
     }
 
 

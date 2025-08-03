@@ -26,7 +26,11 @@ public class dbConnector {
     }
 
 
-    public static dbConnector getInstance() {
+//    public static dbConnector getInstance() {
+//        return new dbConnector();
+//    }
+
+    public static dbConnector getDbConnection() {
         return new dbConnector();
     }
 }
