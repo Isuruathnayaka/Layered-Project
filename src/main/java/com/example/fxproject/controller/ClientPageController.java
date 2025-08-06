@@ -44,6 +44,9 @@ class ClientPageController {
     public AnchorPane ancDarkPane;
     public Button btnQuotationGenerate;
     public TableView table;
+    private final String namePattern = "^[A-Za-z ]+$";
+    private final String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+    private final String phonePattern = "^(\\d+)$";
 
     public void initialize() {
         loadTableData();
@@ -65,7 +68,7 @@ class ClientPageController {
 
     }
 
-    private void setDataToFields(Object newSelection) {
+    private void setDataToFields(Object newSelection) { 
     }
 
     private void loadTableData() {
@@ -77,22 +80,22 @@ class ClientPageController {
         String email = txtEmail.getText();
         String address = txtAddress.getText();
 
-//        boolean isValidName = name.matches(namePattern);
-//        boolean isValidPhone = phone.matches(phonePattern);
-//        boolean isValidEmail = email.matches(emailPattern);
+        boolean isValidName = name.matches(namePattern);
+        boolean isValidPhone = phone.matches(phonePattern);
+        boolean isValidEmail = email.matches(emailPattern);
 
         txtName.setStyle("-fx-border-color: #7367F0;");
         txtPhone.setStyle("-fx-border-color: #7367F0;");
         txtEmail.setStyle("-fx-border-color: #7367F0;");
         txtAddress.setStyle("-fx-border-color: #7367F0;");
 
-//        if (!isValidName) txtName.setStyle("-fx-border-color: red;");
-//        if (!isValidPhone) txtPhone.setStyle("-fx-border-color: red;");
-//        if (!isValidEmail) txtEmail.setStyle("-fx-border-color: red;");
-//
-//        if (isValidName && isValidPhone && isValidEmail) {
-//            return new ClientDTO(clientID, name, phone, email, address);
-//        }
+        if (!isValidName) txtName.setStyle("-fx-border-color: red;");
+        if (!isValidPhone) txtPhone.setStyle("-fx-border-color: red;");
+        if (!isValidEmail) txtEmail.setStyle("-fx-border-color: red;");
+
+        if (isValidName && isValidPhone && isValidEmail) {
+            return new ClientDTO(clientID, name, phone, email, address);
+        }
         return null;
 
     }

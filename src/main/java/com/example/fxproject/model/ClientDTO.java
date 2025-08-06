@@ -19,6 +19,10 @@ public class ClientDTO {
     private String address;
 
     public ClientDTO(String clientId, String name, String address) {
+        this.clientID = clientId;
+        this.clientName = name;
+        this.address = address;
+
     }
 
     public String getName(){
