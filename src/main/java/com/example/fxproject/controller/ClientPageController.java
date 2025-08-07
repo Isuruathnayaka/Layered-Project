@@ -1,7 +1,10 @@
 package com.example.fxproject.controller;
 
 
+import com.example.fxproject.bo.custom.BOFactory;
+import com.example.fxproject.bo.custom.ClientBo;
 import com.example.fxproject.model.ClientDTO;
+import com.example.fxproject.view.tdm.ClientTM;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,9 +14,10 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-class ClientPageController {
+public class ClientPageController {
 
     public Label lblClientID;
     public TextField txtClientID;
@@ -48,8 +52,9 @@ class ClientPageController {
     private final String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private final String phonePattern = "^(\\d+)$";
 
+   ClientBo clientBo =(ClientBo) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);
     public void initialize() {
-        loadTableData();
+
 
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -64,15 +69,42 @@ class ClientPageController {
         ColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         columnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        loadTableData();
+        initUI();
+
+    }
+    private void initUI() {
+        txtClientID.clear();
+        txtName.clear();
+        txtAddress.clear();
+        txtEmail.clear();
+        txtPhone.clear();
+        txtSearch.clear();
+        txtQuoID1.clear();
+        txtQuoID.clear();
+        txtName.requestFocus();
 
     }
 
     private void setDataToFields(Object newSelection) { 
     }
 
-    private void loadTableData() {
+    private void loadTableData() throws SQLException, ClassNotFoundException {
+        table.getItems().clear();
+
+        ArrayList<ClientDTO> allClient = clientBo.getAllCustomer();
+        for (ClientDTO clientDTO : allClient) {
+            table.getItems().add(
+                    new ClientTM(
+                            (String) clientDTO.getId(),
+                            clientDTO.getName(),
+                            clientDTO.getAddress(),
+                            clientDTO.getPhone(),
+                            clientDTO.getEmail()
+                    )
+            );
+        }
     }
+
     public ClientDTO chackMach() {
         String clientID = txtClientID.getText();
         String name = txtName.getText();
@@ -108,9 +140,23 @@ class ClientPageController {
     }
 
     public void btnSave(ActionEvent actionEvent) {
+        ClientDTO clientDTO = chackMach();
+        if (clientDTO != null) {
+            try {
+                boolean isSaved = clientBo.saveClient(clientDTO);
+                if (isSaved) {
 
-
+                    new Alert(Alert.AlertType.INFORMATION, "Client saved successfully.").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to save client.").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Error occurred while saving client.").show();
+            }
+        }
     }
+
 
     public void btnUpdate(ActionEvent actionEvent) {
     }

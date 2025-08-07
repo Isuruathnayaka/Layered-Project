@@ -156,7 +156,7 @@
             </Label>
             <TextField fx:id="txtQuoID1" editable="false" layoutX="822.0" layoutY="55.0" promptText="Quotation Date" style="-fx-background-color: #fff;" />
             <Button layoutX="549.0" layoutY="271.0" mnemonicParsing="false" onAction="#FinalReportGenerate" text="Generate" />
-            <Button layoutX="717.0" layoutY="271.0" mnemonicParsing="false" onAction="#generateCancleBtn" prefHeight="25.0" prefWidth="81.0" text="Cancle" />
+            <Button layoutX="717.0" layoutY="271.0" mnemonicParsing="false" onAction="#generateCancleBtn" prefHeight="25.0" prefWidth="81.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

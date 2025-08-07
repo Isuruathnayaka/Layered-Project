@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public class Appinitializer extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(Appinitializer.class.getResource("/com/example/fxproject/fxml/Login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Appinitializer.class.getResource("/view/HomePage.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("IJSE");
         stage.setScene(scene);
