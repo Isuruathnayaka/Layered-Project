@@ -7,9 +7,10 @@ import java.util.ArrayList;
 
 public interface ClientBo extends SuperBO {
     public ArrayList<ClientDTO> getAllCustomer() throws SQLException, ClassNotFoundException ;
-    public void saveClient(ClientDTO clientDTO) throws SQLException,ClassNotFoundException ;
-    public void updateClient(ClientDTO clientDTO) throws SQLException, ClassNotFoundException ;
+    public boolean saveClient(ClientDTO clientDTO) throws SQLException,ClassNotFoundException ;
+    public boolean updateClient(ClientDTO clientDTO) throws SQLException, ClassNotFoundException ;
     public boolean existClient(String id) throws SQLException, ClassNotFoundException;
-    public void deleteClient(String id) throws SQLException, ClassNotFoundException;
+    public boolean deleteClient(String id) throws SQLException, ClassNotFoundException;
     public String generateNewClientId() throws SQLException, ClassNotFoundException;
+
 }

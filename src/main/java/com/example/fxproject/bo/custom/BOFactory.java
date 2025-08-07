@@ -6,29 +6,34 @@ import com.example.fxproject.entity.Client;
 public class BOFactory {
     private static BOFactory boFactory;
 
-    private BOFactory() {
-    }
+    private BOFactory(){}
 
-    public static BOFactory getInstance() {
-        if (boFactory == null) {
+    public static BOFactory getInstance(){
+        if(boFactory == null){
             boFactory = new BOFactory();
         }
         return boFactory;
     }
 
-    public enum BOType {
-        CLIENT, EMPLOYEE, ENROLLMENT
+    public enum BOType{
+        CUSTOMER,ITEM,PLACE_ORDER
     }
 
-    public SuperBO getBO(BOType boType) {
-        switch (boType) {
-            case CLIENT -> {
+    public SuperBO getBO(BOType boType){
+        switch (boType){
+            case CUSTOMER -> {
                 return new ClientBOImpl();
             }
-
+            case ITEM -> {
+                return null;
+            }
+            case PLACE_ORDER -> {
+                return null;
+            }
+            default -> {
+                return null;
+            }
         }
-
-return null;
     }
-
 }
+
