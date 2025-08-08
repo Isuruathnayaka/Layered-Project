@@ -2,63 +2,44 @@ package com.example.fxproject.bo.custom.impl;
 
 import com.example.fxproject.bo.custom.ClientBo;
 import com.example.fxproject.dao.ClientDAO;
-import com.example.fxproject.dao.DAOFactory;
 import com.example.fxproject.entity.Client;
 import com.example.fxproject.model.ClientDTO;
-import lombok.SneakyThrows;
+import com.example.fxproject.bo.custom.MapUtill;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ClientBOImpl implements ClientBo {
 
-    private final ClientDAO clientDAO = (ClientDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.CLIENT);
+    private final ClientDAO clientDAO;
 
-    @SneakyThrows
+    // Dependency Injection via constructor — no hard-coded DAO creation
+    public ClientBOImpl(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
+
     @Override
-    public String generateNewCustomerId() throws SQLException {
+    public String generateNewCustomerId() throws SQLException, ClassNotFoundException {
         return clientDAO.generateNewId();
     }
 
     @Override
     public ArrayList<ClientDTO> getAllCustomer() throws SQLException, ClassNotFoundException {
-        ArrayList<Client> clients = clientDAO.getAll(); // DAO returns entities
-        ArrayList<ClientDTO> dtos = new ArrayList<>();
-
-        for (Client client : clients) {
-            dtos.add(new ClientDTO(
-                    client.getClient_id(),
-                    client.getName(),
-                    client.getPhone(),
-                    client.getEmail(),
-                    client.getAddress()
-            ));
-        }
-        return dtos;
+        return clientDAO.getAll()
+                .stream()
+                .map(MapUtill::toDTO)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     public boolean saveClient(ClientDTO clientDTO) throws SQLException, ClassNotFoundException {
-        Client client = new Client(
-                (String) clientDTO.getId(),
-                clientDTO.getName(),
-                clientDTO.getPhone(),
-                clientDTO.getEmail(),
-                clientDTO.getAddress()
-        );
-        return clientDAO.save(client);
+        return clientDAO.save(MapUtill.toEntity(clientDTO));
     }
 
     @Override
     public boolean updateClient(ClientDTO clientDTO) throws SQLException, ClassNotFoundException {
-        Client client = new Client(
-                (String) clientDTO.getId(),
-                clientDTO.getName(),
-                clientDTO.getPhone(),
-                clientDTO.getEmail(),
-                clientDTO.getAddress()
-        );
-        return clientDAO.update(client);
+        return clientDAO.update(MapUtill.toEntity(clientDTO));
     }
 
     @Override
@@ -79,15 +60,6 @@ public class ClientBOImpl implements ClientBo {
     @Override
     public ClientDTO searchClient(String clientID) throws SQLException, ClassNotFoundException {
         Client client = clientDAO.search(clientID);
-        if (client != null) {
-            return new ClientDTO(
-                    client.getClient_id(),
-                    client.getName(),
-                    client.getPhone(),
-                    client.getEmail(),
-                    client.getAddress()
-            );
-        }
-        return null;
+        return (client != null) ? MapUtill.toDTO(client) : null;
     }
 }

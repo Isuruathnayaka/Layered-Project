@@ -15,7 +15,8 @@ public class DAOFactory {
     }
 
     public enum DAOType {
-        CLIENT
+        CLIENT,
+        EMPLOYEE
     }
 
 
@@ -23,7 +24,8 @@ public class DAOFactory {
         switch (type) {
             case CLIENT:
                 return new ClientDAOImpl(); // ✅ must implement ClientDAO
-            // ...
+            case EMPLOYEE:
+                default:
         }
         return null;
     }

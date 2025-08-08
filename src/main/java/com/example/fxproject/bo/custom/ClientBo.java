@@ -25,5 +25,5 @@ public interface ClientBo extends SuperBO {
 
     ClientDTO searchClient(String clientID) throws SQLException, ClassNotFoundException;
 
-    String generateNewCustomerId() throws SQLException;
+    String generateNewCustomerId() throws SQLException, ClassNotFoundException;
 }
