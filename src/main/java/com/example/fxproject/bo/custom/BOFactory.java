@@ -16,12 +16,12 @@ public class BOFactory {
     }
 
     public enum BOType{
-        CUSTOMER,ITEM,PLACE_ORDER
+        CLIENT,ITEM,PLACE_ORDER
     }
 
     public SuperBO getBO(BOType boType){
         switch (boType){
-            case CUSTOMER -> {
+            case  CLIENT-> {
                 return new ClientBOImpl();
             }
             case ITEM -> {

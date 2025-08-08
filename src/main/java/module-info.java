@@ -10,6 +10,23 @@
 //
 //    exports com.example.fxproject;
 //}
+//module com.example.fxproject {
+//    requires javafx.controls;
+//    requires javafx.fxml;
+//    requires static lombok;
+//    requires java.sql;
+//    requires java.desktop;
+//
+//    opens com.example.fxproject.controller to javafx.fxml;
+//    opens com.example.fxproject.entity to javafx.base;
+//
+//    exports com.example.fxproject;
+//    exports com.example.fxproject.controller;
+//   // exports com.example.fxproject.bo;
+//    exports com.example.fxproject.dao;
+//    exports com.example.fxproject.model;
+//}
+
 module com.example.fxproject {
     requires javafx.controls;
     requires javafx.fxml;
@@ -20,9 +37,13 @@ module com.example.fxproject {
     opens com.example.fxproject.controller to javafx.fxml;
     opens com.example.fxproject.entity to javafx.base;
 
+    // <-- Add this line to open the view.tdm package to javafx.base for reflection:
+    opens com.example.fxproject.view.tdm to javafx.base;
+
     exports com.example.fxproject;
     exports com.example.fxproject.controller;
-   // exports com.example.fxproject.bo;
+    //exports com.example.fxproject.bo;
     exports com.example.fxproject.dao;
     exports com.example.fxproject.model;
+
 }

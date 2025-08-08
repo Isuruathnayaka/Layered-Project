@@ -18,12 +18,14 @@ public class DAOFactory {
         CLIENT
     }
 
+
     public SuperDAO getDAO(DAOType type) {
         switch (type) {
             case CLIENT:
-                return new ClientDAOImpl();
-            default:
-                return null;
+                return new ClientDAOImpl(); // ✅ must implement ClientDAO
+            // ...
         }
+        return null;
     }
+
 }
