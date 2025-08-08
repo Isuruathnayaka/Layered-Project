@@ -177,8 +177,9 @@ public class ClientPageController implements Initializable {
         // TODO: implement report generation
     }
 
-    public void btnReset(ActionEvent actionEvent) {
+    public void btnReset(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         initUI();
+        loadTableData();
     }
 
     public void btnSave(ActionEvent actionEvent) {
@@ -227,46 +228,40 @@ public class ClientPageController implements Initializable {
         }
     }
 
-    public void btnDelete(ActionEvent actionEvent) {
-        String clientID = txtClientID.getText();
-        if (!clientID.isEmpty()) {
-            try {
-                boolean isDeleted = clientBo.deleteClient(clientID);
-                if (isDeleted) {
-                    new Alert(Alert.AlertType.INFORMATION, "Client deleted successfully.").show();
-                    loadTableData();
-                    initUI();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Failed to delete client.").show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error occurred while deleting client.").show();
-            }
-        }
-    }
-
     public void btnSearch(ActionEvent actionEvent) {
-        String clientID = txtSearch.getText();
-        if (!clientID.isEmpty()) {
-            try {
-                ClientDTO client = clientBo.searchClient(clientID);
-                if (client != null) {
-                    setDataToFields(new ClientTM(
-                            (String) client.getId(),
-                            client.getName(),
-                            client.getPhone(),
-                            client.getEmail(),
-                            client.getAddress()
-                    ));
-                    saveBtn.setDisable(true);
-                } else {
-                    new Alert(Alert.AlertType.WARNING, "Client not found.").show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error occurred while searching client.").show();
+        String clientID = txtSearch.getText().trim();
+
+        try {
+            table.getItems().clear();  // clear existing table data
+
+            if (clientID.isEmpty()) {
+                // If search box empty, load all data
+                loadTableData();
+                saveBtn.setDisable(false);
+                return;
             }
+
+            ClientDTO client = clientBo.searchClient(clientID);  // single client search by ID
+
+            if (client != null) {
+                // Add only the found client to the table
+                table.getItems().add(new ClientTM(
+                        (String) client.getId(),
+                        client.getName(),
+                        client.getPhone(),
+                        client.getEmail(),
+                        client.getAddress()
+                ));
+                saveBtn.setDisable(true);  // disable save since this is an existing client
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Client not found: " + clientID).show();
+                loadTableData();  // reload all clients so user can try again
+                saveBtn.setDisable(false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error occurred while searching client.").show();
         }
     }
 
