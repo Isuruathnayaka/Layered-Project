@@ -17,6 +17,15 @@ public class QuotationDTO {
         this.date = date;
     }
 
+    public QuotationDTO(String quotationId, String clientId, String description, double amount, LocalDate date) {
+        this.quotationId = quotationId;
+        this.clientId = clientId;
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+
+    }
+
     public String getQuotationId() {
         return quotationId;
     }

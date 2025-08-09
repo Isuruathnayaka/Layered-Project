@@ -1,6 +1,7 @@
 package com.example.fxproject.bo.custom;
 
 import com.example.fxproject.model.ClientDTO;
+import com.example.fxproject.model.QuotationDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,4 +27,6 @@ public interface ClientBo extends SuperBO {
     ClientDTO searchClient(String clientID) throws SQLException, ClassNotFoundException;
 
     String generateNewCustomerId() throws SQLException, ClassNotFoundException;
+
+    boolean saveQuotation(QuotationDTO dto);
 }

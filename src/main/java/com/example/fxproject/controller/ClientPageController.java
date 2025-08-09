@@ -2,6 +2,7 @@ package com.example.fxproject.controller;
 
 import com.example.fxproject.bo.custom.BOFactory;
 import com.example.fxproject.bo.custom.ClientBo;
+import com.example.fxproject.bo.custom.MapUtill;
 import com.example.fxproject.model.ClientDTO;
 import com.example.fxproject.view.tdm.ClientTM;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -269,21 +271,24 @@ public class ClientPageController implements Initializable {
         // TODO: navigate to enroll screen
     }
 
-    public void btnQuotationGenerate(ActionEvent actionEvent) {
-        // TODO: implement quotation generation
+    public void btnQuotationGenerate(ActionEvent actionEvent) throws IOException {
+        MapUtill.NavigationUtil.openWindow("/view/QuotationGenerate.fxml","Quotation");
+
     }
 
     public void QuoBtnEntered(MouseEvent mouseEvent) {
-        // TODO: implement hover effect
+        btnQuotationGenerate.setStyle("-fx-background-color: #28a745;");
+        btnQuotationGenerate.setStyle("-fx-text-fill: white;");
+
     }
 
     public void QuoBtnExited(MouseEvent mouseEvent) {
-        // TODO: implement hover effect end
+        btnQuotationGenerate.setStyle("");
+        btnQuotationGenerate.setStyle("-fx-text-fill: black;");
+
     }
 
-    public void generateCancelBtn(ActionEvent actionEvent) {
-        // TODO: implement cancel action
-    }
+
 
     public void FinalReportGenerate(ActionEvent actionEvent) {
         // TODO: implement final report generation
