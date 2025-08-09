@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="543.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fxproject.controller.EmployeePageController">
+<AnchorPane prefHeight="543.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fxproject.controller.EmpController">
    <children>
       <HBox layoutX="-2.0" prefHeight="43.0" prefWidth="600.0">
          <children>
@@ -102,9 +102,9 @@
           <TableColumn fx:id="tabEmpID" prefWidth="75.0" text="Emp ID" />
           <TableColumn fx:id="tabName" prefWidth="91.19995880126953" text="Name" />
             <TableColumn fx:id="tabPhone" prefWidth="109.0" text="Phone" />
-            <TableColumn fx:id="tabEmaail" prefWidth="177.0" text="Duty" />
-            <TableColumn fx:id="tabAddress" prefWidth="302.0" text="                         Email" />
-            <TableColumn fx:id="tabDuty" prefWidth="279.0" text="                                Address" />
+            <TableColumn fx:id="tabEmail" prefWidth="177.0" text="Email" />
+            <TableColumn fx:id="tabAddress" prefWidth="302.0" text="Address" />
+            <TableColumn fx:id="tabDuty" prefWidth="279.0" text="Duty" />
         </columns>
       </TableView>
    </children>

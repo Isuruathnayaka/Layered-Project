@@ -1,18 +1,22 @@
 package com.example.fxproject.dao;
 
 import com.example.fxproject.entity.Client;
+import com.example.fxproject.entity.Employee;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface CrudDAO<T> extends SuperDAO{
 
-    public ArrayList<Client> getAll() throws SQLException, ClassNotFoundException;
-    public boolean save(Client customerDTO) throws SQLException, ClassNotFoundException;
-    public boolean update(Client customerDTO) throws SQLException, ClassNotFoundException;
-    public boolean delete(String id) throws SQLException, ClassNotFoundException;
-    public String generateNewId() throws SQLException, ClassNotFoundException;
-    public Client search(String id) throws SQLException, ClassNotFoundException;
+    ArrayList<T> getAll() throws SQLException, ClassNotFoundException;
 
+    boolean save(T dto) throws SQLException, ClassNotFoundException;
 
+    boolean update(T dto) throws SQLException, ClassNotFoundException;
+
+    boolean delete(String id) throws SQLException, ClassNotFoundException;
+
+    String generateNewId() throws SQLException, ClassNotFoundException;
+
+    T search(String id) throws SQLException, ClassNotFoundException;
 }

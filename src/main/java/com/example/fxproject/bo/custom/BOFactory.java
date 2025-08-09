@@ -1,8 +1,10 @@
 package com.example.fxproject.bo.custom;
 
 import com.example.fxproject.bo.custom.impl.ClientBOImpl;
+import com.example.fxproject.bo.custom.impl.EmployeeBoImpl;
 import com.example.fxproject.dao.ClientDAO;
 import com.example.fxproject.dao.DAOFactory;
+import com.example.fxproject.dao.EmployeeDAO;
 
 public class BOFactory {
     private static BOFactory boFactory;
@@ -17,7 +19,7 @@ public class BOFactory {
     }
 
     public enum BOType {
-        CLIENT, ITEM, PLACE_ORDER
+        CLIENT, EMPLOYEE, PLACE_ORDER
     }
 
     public SuperBO getBO(BOType boType) {
@@ -28,8 +30,9 @@ public class BOFactory {
                 // Inject DAO into BO
                 return new ClientBOImpl(clientDAO);
             }
-            case ITEM -> {
-                return null; // Will be implemented later
+            case EMPLOYEE -> {
+                EmployeeDAO employeeDAO = (EmployeeDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.EMPLOYEE);
+                return new EmployeeBoImpl(employeeDAO); // Will be implemented later
             }
             case PLACE_ORDER -> {
                 return null; // Will be implemented later

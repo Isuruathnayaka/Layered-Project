@@ -1,6 +1,7 @@
 package com.example.fxproject.dao;
 
 import com.example.fxproject.dao.impl.ClientDAOImpl;
+import com.example.fxproject.dao.impl.EmployeeDAOImpl;
 
 public class DAOFactory {
     private static DAOFactory daoFactory;
@@ -25,7 +26,7 @@ public class DAOFactory {
             case CLIENT:
                 return new ClientDAOImpl(); // ✅ must implement ClientDAO
             case EMPLOYEE:
-                default:
+                return new EmployeeDAOImpl();
         }
         return null;
     }
