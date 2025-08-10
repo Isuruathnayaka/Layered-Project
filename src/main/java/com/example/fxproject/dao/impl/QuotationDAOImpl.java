@@ -27,7 +27,7 @@ public class QuotationDAOImpl implements QuotationDAO {
 
         while (rst.next()) {
             quotations.add(new Quotation(
-                    rst.getString("quotatio_id"),
+                    rst.getString("quotation_id"),
                     rst.getString("client_id"),
                     rst.getString("description"),
                     rst.getDouble("amount"),
@@ -85,4 +85,5 @@ public class QuotationDAOImpl implements QuotationDAO {
     public Quotation search(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
+
 }

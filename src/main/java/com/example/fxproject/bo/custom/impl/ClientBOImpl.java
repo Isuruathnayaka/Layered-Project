@@ -5,6 +5,7 @@ import com.example.fxproject.dao.ClientDAO;
 import com.example.fxproject.entity.Client;
 import com.example.fxproject.model.ClientDTO;
 import com.example.fxproject.bo.custom.MapUtill;
+import com.example.fxproject.model.QuotationDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +23,11 @@ public class ClientBOImpl implements ClientBo {
     @Override
     public String generateNewCustomerId() throws SQLException, ClassNotFoundException {
         return clientDAO.generateNewId();
+    }
+
+    @Override
+    public boolean saveQuotation(QuotationDTO dto) {
+        return false;
     }
 
     @Override

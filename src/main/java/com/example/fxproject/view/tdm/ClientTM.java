@@ -1,5 +1,7 @@
 package com.example.fxproject.view.tdm;
 
+import java.time.LocalDate;
+
 public class ClientTM implements Comparable<ClientTM> {
 
     private String id;
@@ -17,6 +19,9 @@ public class ClientTM implements Comparable<ClientTM> {
         this.email = email;
         this.address = address;
 
+    }
+
+    public ClientTM(String quotationId, String clientId, String description, double amount, LocalDate date) {
     }
 
     // Getters and setters

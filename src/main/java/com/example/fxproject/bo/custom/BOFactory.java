@@ -6,6 +6,7 @@ import com.example.fxproject.bo.custom.impl.QuotationBoImpl;
 import com.example.fxproject.dao.ClientDAO;
 import com.example.fxproject.dao.DAOFactory;
 import com.example.fxproject.dao.EmployeeDAO;
+import com.example.fxproject.dao.QuotationDAO;
 
 public class BOFactory {
     private static BOFactory boFactory;
@@ -36,7 +37,8 @@ public class BOFactory {
                 return new EmployeeBoImpl(employeeDAO); // Will be implemented later
             }
             case QUOTATION -> {
-                return new QuotationBoImpl(); // Will be implemented later
+                QuotationDAO quotationDAO=(QuotationDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.QUOTATION);
+                return new QuotationBoImpl(quotationDAO); // Will be implemented later
             }
             default -> {
                 return null;

@@ -44,4 +44,9 @@ public class QuotationBoImpl implements QuotationBo {
     public boolean deleteQuotation(String id) throws SQLException, ClassNotFoundException {
         return quotationDAO.delete(id);
     }
+
+    @Override
+    public String generateNewQuotationId() throws SQLException, ClassNotFoundException {
+        return quotationDAO.generateNewId();
+    }
 }

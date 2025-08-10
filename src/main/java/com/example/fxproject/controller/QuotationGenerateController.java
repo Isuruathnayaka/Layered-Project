@@ -1,12 +1,11 @@
 package com.example.fxproject.controller;
 
 import com.example.fxproject.bo.custom.BOFactory;
-import com.example.fxproject.bo.custom.ClientBo;
+import com.example.fxproject.bo.custom.QuotationBo;
 import com.example.fxproject.model.QuotationDTO;
-import com.example.fxproject.view.tdm.ClientTM;
+import com.example.fxproject.view.tdm.QuotationTM;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,8 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
-
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,62 +23,66 @@ import java.util.stream.Collectors;
 
 public class QuotationGenerateController implements Initializable {
 
-    public DatePicker datePicker;
-
+    public TextArea txtDescription;
+    @FXML private DatePicker datePicker;
     @FXML private TextField txtQuotationId;
     @FXML private TextField txtClientID;
     @FXML private TextField txtAmount;
-    @FXML private TextArea  txtDescription;
-    @FXML private DatePicker dataPicker;
+
     @FXML private TextField txtServiceSelection;
-    @FXML private Button     btnAddService;
-    @FXML private VBox       serviceDisplayBox;
+    @FXML private VBox serviceDisplayBox;
+    @FXML private TableView<QuotationTM> quotationTable;
+    @FXML private TableColumn<QuotationTM, String> colQuotationId;
+    @FXML private TableColumn<QuotationTM, String> colClientId;
+    @FXML private TableColumn<QuotationTM, String> colDescription;
+    @FXML private TableColumn<QuotationTM, Double> colAmount;
+    @FXML private TableColumn<QuotationTM, LocalDate> colDate;
 
-    @FXML private TableView<ClientTM> quotationTable;
-    @FXML private TableColumn<ClientTM, String> colQuotationId;
-    @FXML private TableColumn<ClientTM, String> colClientId;
-    @FXML private TableColumn<ClientTM, String> colDescription;
-    @FXML private TableColumn<ClientTM, Double> colAmount;
-    @FXML private TableColumn<ClientTM, LocalDate> colDate;
-
-    ClientBo clientBo = (ClientBo) BOFactory.getInstance().getBO(BOFactory.BOType.CLIENT);
+    private final QuotationBo quotationBo = (QuotationBo) BOFactory.getInstance().getBO(BOFactory.BOType.QUOTATION);
     private final Map<String, Double> servicesMap = new HashMap<>();
     private final ContextMenu suggestionsMenu = new ContextMenu();
     private final List<Double> selectedServicePrices = new ArrayList<>();
+    private String descriptionFromServiveSellection;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        datePicker.setValue(LocalDate.now()); // Set today's date by default
-
+        setCellValueFactories();
+        loadTableData();
+        datePicker.setValue(LocalDate.now());
         setupServiceData();
         setupAutoSuggestion();
-        initTableCols();
 
-        Platform.runLater(() -> {
-            try { loadQuotationData(); } catch (SQLException e) { throw new RuntimeException(e); }
-        });
-
-        quotationTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) {
-                ClientTM selected = quotationTable.getSelectionModel().getSelectedItem();
-                if (selected != null) { populateFieldsFromDTO(selected); }
+        quotationTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selectedQuo) -> {
+            if (selectedQuo != null) {
+                txtQuotationId.setText(selectedQuo.getQuotation_id());
+                txtClientID.setText(selectedQuo.getClient_id());
+                txtDescription.setText(selectedQuo.getDescription());
+                txtAmount.setText(selectedQuo.getAmount());
+                datePicker.setValue(selectedQuo.getDate());
             }
         });
+
+        setDateRestriction();
+        txtQuotationId.setText(generateNewId());
+    }
+
+    private void setCellValueFactories() {
+        colQuotationId.setCellValueFactory(new PropertyValueFactory<>("quotation_id"));
+        colClientId.setCellValueFactory(new PropertyValueFactory<>("client_id"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+    }
+
+    private void setDateRestriction() {
         LocalDate today = LocalDate.now();
-
-        // Set today's date as default
-        datePicker.setValue(today);
-
-        // Disable all other dates
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-
                 if (date != null && !date.equals(today)) {
                     setDisable(true);
                     setStyle("-fx-background-color: #EEEEEE;");
-                    setTooltip(new Tooltip("Only today's date can be selected"));
                 }
             }
         });
@@ -108,7 +109,10 @@ public class QuotationGenerateController implements Initializable {
                     .filter(s -> s.toLowerCase().startsWith(newText.toLowerCase()))
                     .collect(Collectors.toList());
 
-            if (filtered.isEmpty()) { suggestionsMenu.hide(); return; }
+            if (filtered.isEmpty()) {
+                suggestionsMenu.hide();
+                return;
+            }
 
             suggestionsMenu.getItems().clear();
             for (String service : filtered) {
@@ -137,9 +141,21 @@ public class QuotationGenerateController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Service not found").show();
             return;
         }
+
         double price = servicesMap.get(serviceName);
         Label chip = new Label(serviceName + " - Rs. " + price);
         chip.setStyle("-fx-padding:5;-fx-background-color:#E0FFE0;-fx-border-color:#A0A0A0;-fx-border-radius:5;-fx-background-radius:5;");
+
+        // Click event: send service name to txtDescription
+        chip.setOnMouseClicked(event -> {
+            String currentText = txtDescription.getText();
+            if (currentText == null || currentText.isEmpty()) {
+                txtDescription.setText(serviceName);
+            } else {
+                txtDescription.setText(currentText + ", " + serviceName);
+            }
+        });
+
         serviceDisplayBox.getChildren().add(chip);
         txtServiceSelection.clear();
         suggestionsMenu.hide();
@@ -147,152 +163,124 @@ public class QuotationGenerateController implements Initializable {
         updateTotalAmount();
     }
 
+
     private void updateTotalAmount() {
         double total = selectedServicePrices.stream().mapToDouble(Double::doubleValue).sum();
         txtAmount.setText(String.format("%.2f", total));
     }
 
+    @FXML
     public void btnSave(ActionEvent actionEvent) {
         try {
-            String quotationId = txtQuotationId.getText();
-            String clientId    = txtClientID.getText();
-            double amount      = Double.parseDouble(txtAmount.getText());
-            LocalDate date     = datePicker.getValue();
-
-            if (date == null) { new Alert(Alert.AlertType.WARNING, "Please select a date.").show(); return; }
-
-            String description = txtDescription.getText();
-
-            QuotationDTO dto = new QuotationDTO(quotationId, clientId, amount, description, date);
-            boolean isSaved = clientBo.saveQuotation(dto);
-
-            if (isSaved) {
-                new Alert(Alert.AlertType.INFORMATION, "Quotation saved successfully!").show();
-                loadQuotationData();
+            QuotationDTO dto = new QuotationDTO(
+                    txtQuotationId.getText(),
+                    txtClientID.getText(),
+                    Double.parseDouble(txtAmount.getText()),
+                    txtDescription.getText(),
+                    datePicker.getValue()
+            );
+            if (quotationBo.saveQuotation(dto)) {
+                new Alert(Alert.AlertType.INFORMATION, "Quotation saved!").show();
                 clearForm();
+                loadTableData();
             } else {
-                new Alert(Alert.AlertType.ERROR, "Failed to save quotation.").show();
+                new Alert(Alert.AlertType.ERROR, "Save failed.").show();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
-        }
-    }
-
-    public void btnUpdate(ActionEvent actionEvent) {
-        try {
-            String quotationId = txtQuotationId.getText();
-            if (quotationId.isEmpty()) { new Alert(Alert.AlertType.WARNING, "No quotation selected.").show(); return; }
-
-            String clientId = txtClientID.getText();
-            double amount   = Double.parseDouble(txtAmount.getText());
-            LocalDate date  = datePicker.getValue();
-
-            if (date == null) { new Alert(Alert.AlertType.WARNING, "Please select a date.").show(); return; }
-
-            String description = txtDescription.getText();
-
-            QuotationDTO dto = new QuotationDTO(quotationId, clientId, amount, description, date);
-            boolean ok = QuotationModel.updateQuotation(dto);
-
-            if (ok) {
-                new Alert(Alert.AlertType.INFORMATION, "Updated!").show();
-                loadQuotationData();
-                clearForm();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Update failed.").show();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Error " + ex.getMessage()).show();
-        }
-    }
-
-    public void btnDelete(ActionEvent actionEvent) {
-        String quotationId = txtQuotationId.getText();
-        if (quotationId.isEmpty()) { new Alert(Alert.AlertType.WARNING, "Select a quotation.").show(); return; }
-
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Delete quotation " + quotationId + "?", ButtonType.YES, ButtonType.NO);
-        confirm.showAndWait();
-        if (confirm.getResult() != ButtonType.YES) return;
-
-        try {
-            boolean ok = QuotationModel.deleteQuotation(quotationId);
-            if (ok) {
-                new Alert(Alert.AlertType.INFORMATION, "Deleted.").show();
-                loadQuotationData();
-                clearForm();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Delete failed.").show();
-            }
-        } catch (SQLException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
-    private void populateFieldsFromDTO(ClientTM dto) {
-        txtQuotationId.setText(dto.getQuotationId());
-        txtClientID.setText(dto.getClientId());
-        txtAmount.setText(String.valueOf(dto.getAmount()));
-        if (dto.getDate() != null) {
-            dataPicker.setValue(dto.getDate());
-        } else {
-            datePicker.setValue(null);
-        }
-        txtDescription.setText(dto.getDescription());
-
-        // Optionally, parse description and set service chips if you want
-        serviceDisplayBox.getChildren().clear();
-        selectedServicePrices.clear();
-
-        // If you want to parse the description and show chips:
-        if (dto.getDescription() != null && !dto.getDescription().isEmpty()) {
-            String[] items = dto.getDescription().split(", ");
-            for (String item : items) {
-                Label chip = new Label(item);
-                chip.setStyle("-fx-padding:5;-fx-background-color:#FFEFD5;-fx-border-color:#A0A0A0;-fx-border-radius:5;-fx-background-radius:5;");
-                serviceDisplayBox.getChildren().add(chip);
-
-                // Try to recover price from servicesMap if string starts with service name
-                servicesMap.keySet().stream()
-                        .filter(item::startsWith)
-                        .findFirst()
-                        .ifPresent(s -> selectedServicePrices.add(servicesMap.get(s)));
+    @FXML
+    public void btnUpdate(ActionEvent actionEvent) {
+        try {
+            QuotationDTO dto = new QuotationDTO(
+                    txtQuotationId.getText(),
+                    txtClientID.getText(),
+                    Double.parseDouble(txtAmount.getText()),
+                    txtDescription.getText(),
+                    datePicker.getValue()
+            );
+            if (quotationBo.updateQuotation(dto)) {
+                new Alert(Alert.AlertType.INFORMATION, "Updated!").show();
+                clearForm();
+                loadTableData();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Update failed.").show();
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, ex.getMessage()).show();
         }
-        updateTotalAmount();
     }
 
-    private void initTableCols() {
-        colQuotationId.setCellValueFactory(new PropertyValueFactory<>("quotationId"));
-        colClientId.setCellValueFactory(new PropertyValueFactory<>("clientId"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+    @FXML
+    public void btnDelete(ActionEvent actionEvent) {
+        try {
+            if (quotationBo.deleteQuotation(txtQuotationId.getText())) {
+                new Alert(Alert.AlertType.INFORMATION, "Deleted!").show();
+                clearForm();
+                loadTableData();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Delete failed.").show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
-    private void loadQuotationData() throws SQLException {
-
+    private void loadTableData() {
+        try {
+            List<QuotationDTO> allQuotations = quotationBo.getAllQuotation();
+            quotationTable.setItems(FXCollections.observableArrayList(
+                    allQuotations.stream()
+                            .map(dto -> new QuotationTM(
+                                    dto.getQuotationId(),
+                                    dto.getClientId(),
+                                    dto.getDescription(),
+                                    dto.getAmount(),
+                                    dto.getDate()
+                            ))
+                            .collect(Collectors.toList())
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error loading quotations: " + e.getMessage()).show();
+        }
     }
-
-
 
     private void clearForm() {
-
+        txtQuotationId.setText(generateNewId());
         txtClientID.clear();
         txtAmount.clear();
         datePicker.setValue(LocalDate.now());
-        txtDescription.clear();
+       // serviceDisplayBox.clone();
         txtServiceSelection.clear();
-        serviceDisplayBox.getChildren().clear();
+        txtDescription.clear();
         selectedServicePrices.clear();
         updateTotalAmount();
     }
 
-    public void btnQuotationReportJasper(ActionEvent actionEvent) {
-
+    private String generateNewId() {
+        try {
+            return quotationBo.generateNewQuotationId();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to generate a new Quotation ID: " + e.getMessage()).show();
+        }
+        return "Q001";
     }
 
-    public void btnReset(ActionEvent actionEvent) { clearForm(); }
+    @FXML
+    public void btnQuotationReportJasper(ActionEvent actionEvent) {
+        // TODO: Implement report generation
+    }
+
+    @FXML
+    public void btnReset(ActionEvent actionEvent) {
+        clearForm();
+        loadTableData();
+    }
+
 }

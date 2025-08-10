@@ -14,4 +14,6 @@ public interface QuotationBo extends SuperBO{
 
     public boolean deleteQuotation(String id) throws SQLException, ClassNotFoundException;
 
+
+    String generateNewQuotationId() throws SQLException, ClassNotFoundException;
 }
