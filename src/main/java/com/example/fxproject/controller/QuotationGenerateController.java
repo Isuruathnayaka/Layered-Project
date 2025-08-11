@@ -4,7 +4,6 @@ import com.example.fxproject.bo.custom.BOFactory;
 import com.example.fxproject.bo.custom.QuotationBo;
 import com.example.fxproject.model.QuotationDTO;
 import com.example.fxproject.view.tdm.QuotationTM;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +15,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,7 +26,6 @@ public class QuotationGenerateController implements Initializable {
     @FXML private TextField txtQuotationId;
     @FXML private TextField txtClientID;
     @FXML private TextField txtAmount;
-
     @FXML private TextField txtServiceSelection;
     @FXML private VBox serviceDisplayBox;
     @FXML private TableView<QuotationTM> quotationTable;
@@ -42,7 +39,6 @@ public class QuotationGenerateController implements Initializable {
     private final Map<String, Double> servicesMap = new HashMap<>();
     private final ContextMenu suggestionsMenu = new ContextMenu();
     private final List<Double> selectedServicePrices = new ArrayList<>();
-    private String descriptionFromServiveSellection;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,7 +53,7 @@ public class QuotationGenerateController implements Initializable {
                 txtQuotationId.setText(selectedQuo.getQuotation_id());
                 txtClientID.setText(selectedQuo.getClient_id());
                 txtDescription.setText(selectedQuo.getDescription());
-                txtAmount.setText(selectedQuo.getAmount());
+                txtAmount.setText(String.valueOf(selectedQuo.getAmount()));
                 datePicker.setValue(selectedQuo.getDate());
             }
         });
@@ -100,11 +96,12 @@ public class QuotationGenerateController implements Initializable {
     }
 
     private void setupAutoSuggestion() {
-        txtServiceSelection.textProperty().addListener((obs, oldText, newText) -> {
+        txtDescription.textProperty().addListener((obs, oldText, newText) -> {
             if (newText.isEmpty()) {
                 suggestionsMenu.hide();
                 return;
             }
+
             List<String> filtered = servicesMap.keySet().stream()
                     .filter(s -> s.toLowerCase().startsWith(newText.toLowerCase()))
                     .collect(Collectors.toList());
@@ -118,23 +115,31 @@ public class QuotationGenerateController implements Initializable {
             for (String service : filtered) {
                 MenuItem mi = new MenuItem(service);
                 mi.setOnAction(e -> {
-                    txtServiceSelection.setText(service);
-                    txtServiceSelection.positionCaret(service.length());
-                    suggestionsMenu.hide();
+                    addServiceChip(service);
+                    txtDescription.clear(); // clear after adding
+                    suggestionsMenu.hide(); // hide until user types again
                 });
                 suggestionsMenu.getItems().add(mi);
             }
+
             if (!suggestionsMenu.isShowing()) {
-                suggestionsMenu.show(txtServiceSelection, Side.BOTTOM, 0, 0);
+                suggestionsMenu.show(txtDescription, Side.BOTTOM, 0, 0);
             }
         });
 
-        txtServiceSelection.setOnKeyPressed(event -> {
+        txtDescription.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                addServiceChip(txtServiceSelection.getText().trim());
+                String serviceName = txtDescription.getText().trim();
+                if (!serviceName.isEmpty()) {
+                    addServiceChip(serviceName);
+                    txtDescription.clear();
+                    suggestionsMenu.hide();
+                }
+                event.consume();
             }
         });
     }
+
 
     private void addServiceChip(String serviceName) {
         if (!servicesMap.containsKey(serviceName)) {
@@ -146,23 +151,24 @@ public class QuotationGenerateController implements Initializable {
         Label chip = new Label(serviceName + " - Rs. " + price);
         chip.setStyle("-fx-padding:5;-fx-background-color:#E0FFE0;-fx-border-color:#A0A0A0;-fx-border-radius:5;-fx-background-radius:5;");
 
-        // Click event: send service name to txtDescription
-        chip.setOnMouseClicked(event -> {
-            String currentText = txtDescription.getText();
-            if (currentText == null || currentText.isEmpty()) {
-                txtDescription.setText(serviceName);
-            } else {
-                txtDescription.setText(currentText + ", " + serviceName);
-            }
-        });
+        chip.setOnMouseClicked(event -> appendToDescription(serviceName));
 
         serviceDisplayBox.getChildren().add(chip);
-        txtServiceSelection.clear();
-        suggestionsMenu.hide();
         selectedServicePrices.add(price);
         updateTotalAmount();
+
+        // Immediately update description when added
+        appendToDescription(serviceName);
     }
 
+    private void appendToDescription(String serviceName) {
+        String currentText = txtDescription.getText();
+        if (currentText == null || currentText.isEmpty()) {
+            txtDescription.setText(serviceName);
+        } else {
+            txtDescription.setText(currentText + ", " + serviceName);
+        }
+    }
 
     private void updateTotalAmount() {
         double total = selectedServicePrices.stream().mapToDouble(Double::doubleValue).sum();
@@ -256,8 +262,8 @@ public class QuotationGenerateController implements Initializable {
         txtClientID.clear();
         txtAmount.clear();
         datePicker.setValue(LocalDate.now());
-       // serviceDisplayBox.clone();
-        txtServiceSelection.clear();
+        serviceDisplayBox.getChildren().clear();
+        txtDescription.clear();
         txtDescription.clear();
         selectedServicePrices.clear();
         updateTotalAmount();

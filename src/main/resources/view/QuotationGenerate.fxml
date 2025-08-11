@@ -19,7 +19,7 @@
       <TextField fx:id="txtAmount" layoutX="131.0" layoutY="247.0" style="-fx-background-color: #fff;" />
       <Button layoutX="32.0" layoutY="386.0" mnemonicParsing="false" onAction="#btnSave" text="Save" />
       <Label layoutX="79.0" layoutY="120.0" prefHeight="17.0" prefWidth="38.0" text="Date" />
-      <TextField fx:id="txtServiceSelection" layoutX="131.0" layoutY="150.0" prefHeight="31.0" prefWidth="160.0" style="-fx-background-color: #fff;" />
+      <TextField fx:id="txtDescription1" layoutX="131.0" layoutY="150.0" prefHeight="31.0" prefWidth="160.0" style="-fx-background-color: #fff;" />
       <Label layoutX="64.0" layoutY="150.0" text="Service" />
       <TableView fx:id="quotationTable" layoutX="566.0" layoutY="20.0" prefHeight="483.0" prefWidth="723.0" stylesheets="@../Ui%20Css/TableView.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="537.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
         <columns>

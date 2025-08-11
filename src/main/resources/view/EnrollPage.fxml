@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="543.0" prefWidth="1354.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.IJSE.javafxapplication.controller.EnrollPageController">
+<AnchorPane prefHeight="543.0" prefWidth="1354.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fxproject.controller.EnrollPageController">
    <children>
       <HBox layoutY="23.0" prefHeight="33.0" prefWidth="314.0">
          <children>
@@ -72,13 +72,13 @@
         <columns>
           <TableColumn fx:id="colEnrollid" prefWidth="75.0" text="Enroll ID" />
           <TableColumn fx:id="colClientID" prefWidth="90.0" text="Client ID" />
-            <TableColumn fx:id="colClientName" prefWidth="145.0" text="Client Name" />
-            <TableColumn fx:id="colContact" prefWidth="137.0" text="        Contact" />
-            <TableColumn fx:id="colQuotationID" prefWidth="135.0" text="            Quotation ID" />
-            <TableColumn fx:id="colDate" prefWidth="165.0" text="                 Date" />
-            <TableColumn fx:id="colEmpID" prefWidth="146.0" text="             Emp ID" />
-            <TableColumn fx:id="colStartingDate" prefWidth="190.0" text="Starting Date" />
-            <TableColumn fx:id="colDescription" prefWidth="250.0" text="Description" />
+           <TableColumn fx:id="colClientName" prefWidth="145.0" text="Client Name" />
+           <TableColumn fx:id="colContact" prefWidth="137.0" text="        Contact" />
+           <TableColumn fx:id="colQuotationID" prefWidth="135.0" text="            Quotation ID" />
+           <TableColumn fx:id="colDate" prefWidth="165.0" text="                 Date" />
+           <TableColumn fx:id="colEmpID" prefWidth="146.0" text="             Emp ID" />
+           <TableColumn fx:id="colStartingDate" prefWidth="190.0" text="Starting Date" />
+           <TableColumn fx:id="colDescription" prefWidth="250.0" text="Description" />
         </columns>
       </TableView>
       <Button fx:id="btnGenereteReport" layoutX="14.0" layoutY="264.0" mnemonicParsing="false" onAction="#btnGenereteReport" prefHeight="30.0" prefWidth="130.0" style="-fx-background-color: #778CA3;" text="Generete Report" textFill="WHITE">
