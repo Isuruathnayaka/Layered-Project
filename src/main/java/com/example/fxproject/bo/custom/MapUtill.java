@@ -4,9 +4,11 @@ package com.example.fxproject.bo.custom;
 
 import com.example.fxproject.entity.Client;
 import com.example.fxproject.entity.Employee;
+import com.example.fxproject.entity.Enroll;
 import com.example.fxproject.entity.Quotation;
 import com.example.fxproject.model.ClientDTO;
 import com.example.fxproject.model.EmployeeDTO;
+import com.example.fxproject.model.EnrollDTO;
 import com.example.fxproject.model.QuotationDTO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +18,21 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MapUtill {
+    public static Enroll toEntity(EnrollDTO dto) {
+        return new Enroll(
+                dto.getEnrollId(),
+                dto.getClientID(),
+                dto.getClientName(),
+                dto.getContact(),
+                dto.getQuotationId(),
+                dto.getDate(),
+                dto.getEmployeeId(),
+                dto.getStartingDate(),
+                dto.getDescription()
+
+        );
+    }
+
     public static Client toEntity(ClientDTO dto) {
         return new Client(
                 (String) dto.getId(),
@@ -74,6 +91,21 @@ public class MapUtill {
                 quotation.getDescription(),
                 quotation.getAmount(),
                 quotation.getDate()
+        );
+    }
+
+
+    public static Object toDTO(Enroll enroll) {
+        return new EnrollDTO(
+                enroll.getEnrollId(),
+                enroll.getClientID(),
+                enroll.getClientName(),
+                enroll.getContact(),
+                enroll.getQuotationId(),
+                enroll.getDate(),
+                enroll.getEmployeeId(),
+                enroll.getStartingDate(),
+                enroll.getDescription()
         );
     }
 

@@ -2,7 +2,9 @@ package com.example.fxproject.dao;
 
 import com.example.fxproject.dao.impl.ClientDAOImpl;
 import com.example.fxproject.dao.impl.EmployeeDAOImpl;
+import com.example.fxproject.dao.impl.EnrollDAOImpl;
 import com.example.fxproject.dao.impl.QuotationDAOImpl;
+
 
 import static com.example.fxproject.bo.custom.BOFactory.BOType.QUOTATION;
 
@@ -20,7 +22,9 @@ public class DAOFactory {
 
     public enum DAOType {
         CLIENT,
-        QUOTATION, EMPLOYEE
+        QUOTATION,
+        EMPLOYEE,
+        ENROLL;
     }
 
 
@@ -32,6 +36,8 @@ public class DAOFactory {
                 return new EmployeeDAOImpl();
             case QUOTATION:
                 return new QuotationDAOImpl();
+            case ENROLL:
+                return new EnrollDAOImpl();
         }
         return null;
     }
