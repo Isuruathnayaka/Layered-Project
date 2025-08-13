@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class SQLUtil {
     public static ResultSet executeQuery(String sql, Object... ob) throws SQLException, ClassNotFoundException {
-        Connection conn = dbConnector.getDbConnection().getConnection();
+        Connection conn = dbConnector.getdbConnector().getConnection();
         PreparedStatement pstm = conn.prepareStatement(sql);
         for (int i = 0; i < ob.length; i++) {
             pstm.setObject(i + 1, ob[i]);
@@ -17,7 +17,7 @@ public class SQLUtil {
         return pstm.executeQuery();
     }
     public static boolean executeUpdate(String sql, Object... ob) throws SQLException, ClassNotFoundException {
-        Connection conn = dbConnector.getDbConnection().getConnection();
+        Connection conn = dbConnector.getdbConnector().getConnection();
         PreparedStatement pstm = conn.prepareStatement(sql);
         for (int i = 0; i < ob.length; i++) {
             pstm.setObject(i + 1, ob[i]);

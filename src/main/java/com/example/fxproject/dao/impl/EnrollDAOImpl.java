@@ -1,96 +1,158 @@
 package com.example.fxproject.dao.impl;
 
 import com.example.fxproject.dao.EnrollDAO;
-import com.example.fxproject.dao.SQLUtil;
 import com.example.fxproject.db.dbConnector;
 import com.example.fxproject.entity.Enroll;
-import com.example.fxproject.model.EnrollDTO;
-import com.example.fxproject.model.EnrollQuotationDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
+
+import static com.example.fxproject.db.dbConnector.getConnection;
 
 public class EnrollDAOImpl implements EnrollDAO {
 
-
-
     @Override
-    public ArrayList<Enroll> getAll() throws SQLException, ClassNotFoundException {
-        ResultSet rst =SQLUtil.executeQuery("select * from enroll");
-        ArrayList<Enroll> enrolls = new ArrayList<>();
+    public List<Enroll> getAll() throws SQLException, ClassNotFoundException {
+        List<Enroll> list = new ArrayList<>();
+        String sql = "SELECT * FROM enroll";
 
-        ResultSetMetaData metaData = rst.getMetaData();
-        int columnCount = metaData.getColumnCount();
+        try (Connection con = getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-        System.out.println("Columns in ResultSet: " + columnCount);
-        for (int i = 1; i <= columnCount; i++) {
-            System.out.println(metaData.getColumnName(i));
+            while (rs.next()) {
+                list.add(new Enroll(
+                        rs.getString("enroll_id"),
+                        rs.getString("client_id"),
+                        rs.getString("client_name"),
+                        rs.getString("contact"),
+                        rs.getString("quotation_id"),
+                        rs.getDate("date"),
+                        rs.getString("employee_id"),
+                        rs.getDate("starting_date"),
+                        rs.getString("description")
+                ));
+            }
         }
-        while (rst.next()) {
-            enrolls.add(new Enroll(
-                    rst.getString("enroll_id"),
-                    rst.getString("client_id"),
-                    rst.getString("enroll_name"),
-                    rst.getString("client_name"),
-                    rst.getString("contact"),
-                    rst.getString("quotation_id"),
-                    rst.getString("date"),
-                    rst.getString("employee_id"),
-                    rst.getString("starting_date"),
-                    rst.getString("description")
-            ));
+        return list;
+    }
+
+    @Override
+    public boolean save(Enroll enroll) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO enroll (enroll_id, client_id, client_name, contact, quotation_id, date, employee_id, starting_date, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, enroll.getEnrollId());
+            pst.setString(2, enroll.getClientId());
+            pst.setString(3, enroll.getClientName());
+            pst.setString(4, enroll.getContact());
+            pst.setString(5, enroll.getQuotationId());
+            pst.setDate(6, enroll.getDate());
+            pst.setString(7, enroll.getEmployeeId());
+            pst.setDate(8, enroll.getStartingDate());
+            pst.setString(9, enroll.getDescription());
+
+            return pst.executeUpdate() > 0;
         }
-     return enrolls;
     }
 
     @Override
-    public boolean save(Enroll dto) throws SQLException, ClassNotFoundException {
-        return SQLUtil.executeUpdate(
-                "INSERT INTO enroll (enroll_id, client_id, client_name, contact, quotation_id, date, employee_id, starting_date, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                dto.getEnrollId(),dto.getClientID(),dto.getClientName(),dto.getContact(),dto.getQuotationId(),dto.getDate(),dto.getEmployeeId(),dto.getStartingDate(),dto.getDescription()
-        );
+    public boolean update(Enroll enroll) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE enroll SET starting_date = ?, description = ? WHERE enroll_id = ?";
+        try (Connection con = getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setDate(1, enroll.getStartingDate());
+            pst.setString(2, enroll.getDescription());
+            pst.setString(3, enroll.getEnrollId());
+
+            return pst.executeUpdate() > 0;
+        }
     }
 
     @Override
-    public boolean update(Enroll dto) throws SQLException, ClassNotFoundException {
-        return SQLUtil.executeUpdate(
-                "UPDATE enroll SET starting_date = ?, description = ? WHERE enroll_id = ?",
-                dto.getClientID(),dto.getClientName(),dto.getContact(),dto.getQuotationId(),dto.getDate(),dto.getEmployeeId(),dto.getStartingDate(),dto.getDescription(),dto.getEnrollId()
-        );
+    public boolean delete(String enrollId) throws SQLException, ClassNotFoundException {
+        String sql = "DELETE FROM enroll WHERE enroll_id = ?";
+        try (Connection con = getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, enrollId);
+            return pst.executeUpdate() > 0;
+        }
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return SQLUtil.executeUpdate(
-                "DELETE FROM enroll WHERE enroll_id = ?"
+    public Enroll search(String enrollId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM enroll WHERE enroll_id = ?";
+        try (Connection con = getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-        );
+            pst.setString(1, enrollId);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return new Enroll(
+                        rs.getString("enroll_id"),
+                        rs.getString("client_id"),
+                        rs.getString("client_name"),
+                        rs.getString("contact"),
+                        rs.getString("quotation_id"),
+                        rs.getDate("date"),
+                        rs.getString("employee_id"),
+                        rs.getDate("starting_date"),
+                        rs.getString("description")
+                );
+            }
+        }
+        return null;
     }
 
     @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
         String sql = "SELECT enroll_id FROM enroll ORDER BY enroll_id DESC LIMIT 1";
-        ResultSet rst = SQLUtil.executeQuery(sql);
+        try (Connection con = getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-        if (rst.next()) {
-            String lastId = rst.getString("enroll_id");
-
-
-            String numericPart = lastId.replaceAll("\\D", "");
-
-            int newId = Integer.parseInt(numericPart) + 1;
-
-
-            return String.format("EN%03d", newId);
-        } else {
-            return "EN001";
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String lastId = rs.getString("enroll_id");
+                int num = Integer.parseInt(lastId.substring(2)) + 1;
+                return String.format("EN%03d", num);
+            }
         }
+        return "EN001";
     }
 
     @Override
-    public Enroll search(String id) throws SQLException, ClassNotFoundException {
+    public Enroll searchLatestByClientId(String clientId) throws SQLException {
+        String sql = "SELECT e.*, c.name AS client_name, c.phone, q.quotation_id " +
+                "FROM enroll e " +
+                "JOIN client c ON e.client_id = c.client_id " +
+                "JOIN quotation q ON e.quotation_id = q.quotation_id " +
+                "WHERE e.client_id = ? " +
+                "ORDER BY e.date DESC LIMIT 1";
+
+        PreparedStatement pst = getConnection().prepareStatement(sql);
+        pst.setString(1, clientId);
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            return new Enroll(
+                    rs.getString("enroll_id"),
+                    rs.getString("client_id"),
+                    rs.getString("client_name"),
+                    rs.getString("phone"),
+                    rs.getString("quotation_id"),
+                    rs.getDate("date"),
+                    rs.getString("employee_id"),
+                    rs.getDate("starting_date"),
+                    rs.getString("description")
+            );
+        }
         return null;
     }
+
 }

@@ -1,9 +1,9 @@
-package com.example.fxproject.model;
+package com.example.fxproject.entity;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class PaymentDTO {
+public class Payment {
     private int invoiceNumber;
     private String enrollId;
     private String quotationId;
@@ -13,9 +13,9 @@ public class PaymentDTO {
     private String status;
     private Timestamp paymentDate;
 
-    public PaymentDTO() {}
+    public Payment() {}
 
-    public PaymentDTO(int invoiceNumber, String enrollId, String quotationId, double amount, boolean advancePaid, double advanceAmount, String status, Timestamp paymentDate) {
+    public Payment(int invoiceNumber, String enrollId, String quotationId, double amount, boolean advancePaid, double advanceAmount, String status, Timestamp paymentDate) {
         this.invoiceNumber = invoiceNumber;
         this.enrollId = enrollId;
         this.quotationId = quotationId;
@@ -26,7 +26,17 @@ public class PaymentDTO {
         this.paymentDate = paymentDate;
     }
 
-    public PaymentDTO(Object paymentId, String enrollId, double amount, Object date, Object paymentType) {
+    // For advance/full payment insert without invoiceNumber/paymentDate
+    public Payment(String enrollId, String quotationId, double amount, boolean advancePaid, double advanceAmount, String status) {
+        this.enrollId = enrollId;
+        this.quotationId = quotationId;
+        this.amount = amount;
+        this.advancePaid = advancePaid;
+        this.advanceAmount = advanceAmount;
+        this.status = status;
+    }
+
+    public Payment(String paymentId, String enrollId, double amount, Date date, String paymentType) {
     }
 
     // Getters and setters
@@ -47,16 +57,15 @@ public class PaymentDTO {
     public Timestamp getPaymentDate() { return paymentDate; }
     public void setPaymentDate(Timestamp paymentDate) { this.paymentDate = paymentDate; }
 
-
-    public String getPaymentId() {
-        return getPaymentId().toString();
+    public Object getPaymentId() {
+        return getPaymentId();
     }
 
-    public Date getDate() {
+    public Object getDate() {
         return getDate();
     }
 
-    public String getPaymentType() {
-        return getPaymentType().toString();
+    public Object getPaymentType() {
+        return getPaymentType();
     }
 }

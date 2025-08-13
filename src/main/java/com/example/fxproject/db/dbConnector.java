@@ -30,7 +30,7 @@ public class dbConnector {
 //        return new dbConnector();
 //    }
 
-    public static dbConnector getDbConnection() {
+    public static dbConnector getdbConnector() {
         return new dbConnector();
     }
 }

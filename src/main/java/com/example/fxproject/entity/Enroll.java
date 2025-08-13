@@ -6,47 +6,57 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Enroll {
-
     private String enrollId;
-    @Getter
     private String clientId;
     private String clientName;
     private String contact;
     private String quotationId;
-    private Date   date;
+    private Date date;
     private String employeeId;
-    private Date   startingDate;
+    private Date startingDate;
     private String description;
 
-
-
-
-
-    public Enroll(String enrollId, String quotationId, String name) {
-        this.enrollId = enrollId;
-        this.quotationId = quotationId;
-        this.enrollId = enrollId;
-
+    public Enroll(String quotationId, String clientName, double amount, String description) {
     }
 
-    public Enroll(String id, String quotationId) {
-        this.enrollId = id;
-        this.quotationId = quotationId;
-    }
-
-    public Enroll(String enrollId, String clientId, String enrollName, String clientName, String contact, String quotationId, String date, String employeeId, String startingDate, String description) {
-    }
-
-
-    public String getPhone() {
-        return contact;
+    public Object getAmount() {
+        return null;
     }
 
     public String getClientID() {
+        return clientId;
+    }
+    public String getClientName() {
+        return clientName;
+    }
+    public String getContact() {
+        return contact;
+    }
+    public String getQuotationId() {
+        return quotationId;
+    }
+    public Date getDate() {
+        return date;
+    }
+
+    public Date getStartingDate() {
+        return startingDate;
+    }
+    public String getDescription() {
+
+        return description;
+    }
+
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getClientId() {
         return clientId;
     }
 }

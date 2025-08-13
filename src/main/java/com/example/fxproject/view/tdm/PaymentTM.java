@@ -1,9 +1,8 @@
-package com.example.fxproject.model;
+package com.example.fxproject.view.tdm;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
-public class PaymentDTO {
+public class PaymentTM{
     private int invoiceNumber;
     private String enrollId;
     private String quotationId;
@@ -13,9 +12,9 @@ public class PaymentDTO {
     private String status;
     private Timestamp paymentDate;
 
-    public PaymentDTO() {}
+    public PaymentTM() {}
 
-    public PaymentDTO(int invoiceNumber, String enrollId, String quotationId, double amount, boolean advancePaid, double advanceAmount, String status, Timestamp paymentDate) {
+    public PaymentTM(int invoiceNumber, String enrollId, String quotationId, double amount, boolean advancePaid, double advanceAmount, String status, Timestamp paymentDate) {
         this.invoiceNumber = invoiceNumber;
         this.enrollId = enrollId;
         this.quotationId = quotationId;
@@ -24,9 +23,6 @@ public class PaymentDTO {
         this.advanceAmount = advanceAmount;
         this.status = status;
         this.paymentDate = paymentDate;
-    }
-
-    public PaymentDTO(Object paymentId, String enrollId, double amount, Object date, Object paymentType) {
     }
 
     // Getters and setters
@@ -46,17 +42,4 @@ public class PaymentDTO {
     public void setStatus(String status) { this.status = status; }
     public Timestamp getPaymentDate() { return paymentDate; }
     public void setPaymentDate(Timestamp paymentDate) { this.paymentDate = paymentDate; }
-
-
-    public String getPaymentId() {
-        return getPaymentId().toString();
-    }
-
-    public Date getDate() {
-        return getDate();
-    }
-
-    public String getPaymentType() {
-        return getPaymentType().toString();
-    }
 }

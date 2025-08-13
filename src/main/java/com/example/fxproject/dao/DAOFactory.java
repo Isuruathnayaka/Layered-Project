@@ -1,5 +1,6 @@
 package com.example.fxproject.dao;
 
+
 import com.example.fxproject.dao.impl.ClientDAOImpl;
 import com.example.fxproject.dao.impl.EmployeeDAOImpl;
 import com.example.fxproject.dao.impl.EnrollDAOImpl;
@@ -24,14 +25,14 @@ public class DAOFactory {
         CLIENT,
         QUOTATION,
         EMPLOYEE,
-        ENROLL;
+        ENROLL, PAYMENT;
     }
 
 
     public SuperDAO getDAO(DAOType type) {
         switch (type) {
             case CLIENT:
-                return new ClientDAOImpl(); // ✅ must implement ClientDAO
+                return new ClientDAOImpl(); //  must implement ClientDAO
             case EMPLOYEE:
                 return new EmployeeDAOImpl();
             case QUOTATION:

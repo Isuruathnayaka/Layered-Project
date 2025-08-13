@@ -1,9 +1,7 @@
 package com.example.fxproject.bo.custom;
 
-import com.example.fxproject.bo.custom.impl.ClientBOImpl;
-import com.example.fxproject.bo.custom.impl.EmployeeBoImpl;
-import com.example.fxproject.bo.custom.impl.EnrollBoImpl;
-import com.example.fxproject.bo.custom.impl.QuotationBoImpl;
+import com.example.fxproject.bo.custom.impl.*;
+
 import com.example.fxproject.dao.*;
 
 public class BOFactory {
@@ -19,7 +17,7 @@ public class BOFactory {
     }
 
     public enum BOType {
-        CLIENT, EMPLOYEE, QUOTATION,ENROLL
+        CLIENT, EMPLOYEE, QUOTATION,ENROLL,PAYMENT
     }
 
     public SuperBO getBO(BOType boType) {
@@ -42,6 +40,10 @@ public class BOFactory {
                 EnrollDAO enrollDAO=(EnrollDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.ENROLL);
                 return new EnrollBoImpl(enrollDAO);
 
+            }
+            case PAYMENT -> {
+                PaymentDAO paymentDAO= (PaymentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PAYMENT);
+                return new PaymentBOImpl(paymentDAO);
             }
             default -> {
                 return null;

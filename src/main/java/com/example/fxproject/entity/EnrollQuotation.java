@@ -1,6 +1,6 @@
-package com.example.fxproject.model;
+package com.example.fxproject.entity;
 
-public class EnrollQuotationDTO {
+public class EnrollQuotation {
     private String quotationId;
     private String clientName;
     private double amount;
@@ -11,15 +11,12 @@ public class EnrollQuotationDTO {
 
 
 
-    public EnrollQuotationDTO(String quotationId, String clientName, String client_name, double amount, String description) {
+    public EnrollQuotation(String quotationId, String clientName, String client_name, double amount, String description) {
         this.quotationId = quotationId;
         this.clientName = clientName;
         this.amount = amount;
         this.description = description;
 
-    }
-
-    public EnrollQuotationDTO(String quotationId, String clientName, Object amount, String description) {
     }
 
     // Getters
