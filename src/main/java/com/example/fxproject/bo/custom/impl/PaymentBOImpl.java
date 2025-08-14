@@ -1,7 +1,6 @@
 package com.example.fxproject.bo.custom.impl;
 
 import com.example.fxproject.bo.custom.PaymentBO;
-import com.example.fxproject.dao.DAOFactory;
 import com.example.fxproject.dao.PaymentDAO;
 import com.example.fxproject.model.PaymentDTO;
 import com.example.fxproject.model.EnrollDTO;
@@ -14,14 +13,19 @@ import java.util.stream.Collectors;
 
 public class PaymentBOImpl implements PaymentBO {
 
-    private final PaymentDAO paymentDAO = (PaymentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PAYMENT);
+    private final PaymentDAO paymentDAO;
+
 
     public PaymentBOImpl(PaymentDAO paymentDAO) {
+        if (paymentDAO == null) throw new RuntimeException("PaymentDAO cannot be null!");
+        this.paymentDAO = paymentDAO;
     }
 
     @Override
     public EnrollDTO getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException {
         Enroll enroll = paymentDAO.getQuotationDetailsByEnrollId(enrollId);
+        if (enroll == null) return null;
+
         return new EnrollDTO(
                 enroll.getEnrollId(),
                 enroll.getClientId(),
@@ -37,41 +41,52 @@ public class PaymentBOImpl implements PaymentBO {
 
     @Override
     public List<PaymentDTO> loadAllPayments() throws SQLException, ClassNotFoundException {
-        return paymentDAO.loadAllPayments().stream()
-                .map(p -> new PaymentDTO(
-                        p.getPaymentId(),
-                        p.getEnrollId(),
-                        p.getAmount(),
-                        p.getDate(),
-                        p.getPaymentType()
-                ))
-                .collect(Collectors.toList());
+        List<Payment> payments = paymentDAO.loadAllPayments();
+        return payments.stream().map(p -> new PaymentDTO(
+                p.getInvoiceNumber(),
+                p.getEnrollId(),
+                p.getQuotationId(),
+                p.getAmount(),
+                p.isAdvancePaid(),
+                p.getAdvanceAmount(),
+                p.getStatus(),
+                p.getPaymentDate()
+        )).collect(Collectors.toList());
     }
 
     @Override
     public boolean payAdvance(PaymentDTO dto) throws SQLException, ClassNotFoundException {
+
+
         return paymentDAO.payAdvance(new Payment(
-                dto.getPaymentId(),
                 dto.getEnrollId(),
+                dto.getQuotationId(),
                 dto.getAmount(),
-                dto.getDate(),
-                dto.getPaymentType()
+                dto.isAdvancePaid(),
+                dto.getAdvanceAmount(),
+                "ADVANCE PAID"
         ));
     }
 
     @Override
     public boolean payFull(PaymentDTO dto) throws SQLException, ClassNotFoundException {
         return paymentDAO.payFull(new Payment(
-                dto.getPaymentId(),
                 dto.getEnrollId(),
+                dto.getQuotationId(),
                 dto.getAmount(),
-                dto.getDate(),
-                dto.getPaymentType()
+                false,
+                0,
+                "FULL PAID"
         ));
     }
 
     @Override
     public int getPaymentCount() throws SQLException, ClassNotFoundException {
         return paymentDAO.getPaymentCount();
+    }
+
+    @Override
+    public Enroll getQuotationDetails(String enrollId) throws SQLException, ClassNotFoundException {
+        return paymentDAO.getQuotationDetailsByEnrollId(enrollId);
     }
 }

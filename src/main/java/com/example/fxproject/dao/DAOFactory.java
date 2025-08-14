@@ -1,12 +1,10 @@
 package com.example.fxproject.dao;
 
 
-import com.example.fxproject.dao.impl.ClientDAOImpl;
-import com.example.fxproject.dao.impl.EmployeeDAOImpl;
-import com.example.fxproject.dao.impl.EnrollDAOImpl;
-import com.example.fxproject.dao.impl.QuotationDAOImpl;
+import com.example.fxproject.dao.impl.*;
 
 
+import static com.example.fxproject.bo.custom.BOFactory.BOType.PAYMENT;
 import static com.example.fxproject.bo.custom.BOFactory.BOType.QUOTATION;
 
 public class DAOFactory {
@@ -25,7 +23,8 @@ public class DAOFactory {
         CLIENT,
         QUOTATION,
         EMPLOYEE,
-        ENROLL, PAYMENT;
+        ENROLL,
+        PAYMENT
     }
 
 
@@ -39,7 +38,11 @@ public class DAOFactory {
                 return new QuotationDAOImpl();
             case ENROLL:
                 return new EnrollDAOImpl();
+                case PAYMENT:
+                return new PaymentDAOImpl();
+
         }
+
         return null;
     }
 

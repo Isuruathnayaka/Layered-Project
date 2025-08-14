@@ -46,22 +46,27 @@ public class PaymentDAOImpl implements PaymentDAO {
 
         while (rs.next()) {
             payments.add(new Payment(
-                    rs.getString("payment_id"),
+                    rs.getInt("invoice_number"),
                     rs.getString("enroll_id"),
+                    rs.getString("quotation_id"),
                     rs.getDouble("amount"),
-                    rs.getDate("date"),
-                    rs.getString("payment_type")
+                    rs.getBoolean("advance_paid"),
+                    rs.getDouble("advance_amount"),
+                    rs.getString("status"),
+                    rs.getTimestamp("payment_date")
             ));
         }
         return payments;
     }
 
-    @Override
+
+
+        @Override
     public Payment getPaymentByInvoice(int invoiceNumber) throws SQLException, ClassNotFoundException {
         ResultSet rs = SQLUtil.executeQuery("SELECT * FROM payment WHERE payment_id = ?", invoiceNumber);
         if (rs.next()) {
             return new Payment(
-                    rs.getString("payment_id"),
+
                     rs.getString("enroll_id"),
                     rs.getDouble("amount"),
                     rs.getDate("date"),
@@ -73,26 +78,32 @@ public class PaymentDAOImpl implements PaymentDAO {
 
     @Override
     public boolean payAdvance(Payment payment) throws SQLException, ClassNotFoundException {
-        return SQLUtil.executeUpdate(
-                "INSERT INTO payment (payment_id, enroll_id, amount, date, payment_type) VALUES (?, ?, ?, ?, ?)",
-                payment.getPaymentId(),
+        SQLUtil.executeUpdate(
+                "INSERT INTO payment (enroll_id, quotation_id, amount, advance_paid, advance_amount, status, payment_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 payment.getEnrollId(),
+                payment.getQuotationId(),
                 payment.getAmount(),
-                payment.getDate(),
-                payment.getPaymentType()
+                payment.isAdvancePaid(),
+                payment.getAdvanceAmount(),
+                payment.getStatus(),
+                new java.sql.Timestamp(System.currentTimeMillis())
         );
+        return false;
     }
 
     @Override
     public boolean payFull(Payment payment) throws SQLException, ClassNotFoundException {
-        return SQLUtil.executeUpdate(
-                "INSERT INTO payment (payment_id, enroll_id, amount, date, payment_type) VALUES (?, ?, ?, ?, ?)",
-                payment.getPaymentId(),
+        SQLUtil.executeUpdate(
+                "INSERT INTO payment (enroll_id, quotation_id, amount, advance_paid, advance_amount, status, payment_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 payment.getEnrollId(),
+                payment.getQuotationId(),
                 payment.getAmount(),
-                payment.getDate(),
-                payment.getPaymentType()
+                payment.isAdvancePaid(),
+                payment.getAdvanceAmount(),
+                payment.getStatus(),
+                new java.sql.Timestamp(System.currentTimeMillis())
         );
+        return false;
     }
 
     @Override

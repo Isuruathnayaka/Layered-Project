@@ -1,9 +1,8 @@
 package com.example.fxproject.controller;
 
 import com.example.fxproject.bo.custom.BOFactory;
-import com.example.fxproject.bo.custom.EmployeeBo;
 import com.example.fxproject.bo.custom.PaymentBO;
-import com.example.fxproject.model.EnrollDTO;
+import com.example.fxproject.entity.Enroll;
 import com.example.fxproject.model.EnrollQuotationDTO;
 import com.example.fxproject.model.PaymentDTO;
 import javafx.collections.FXCollections;
@@ -81,7 +80,7 @@ public class PaymentController implements Initializable {
             showAlert(Alert.AlertType.WARNING, "Please enter an Enroll ID.");
             return;
         }
-        EnrollDTO dto = paymentBO.getQuotationDetailsByEnrollId(enrollId);
+        Enroll dto = paymentBO.getQuotationDetails(enrollId);
         if (dto != null) {
             txtQuotationID.setText(dto.getQuotationId());
             txtClientName.setText(dto.getClientName());

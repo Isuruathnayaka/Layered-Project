@@ -6,7 +6,7 @@ import com.example.fxproject.entity.Enroll;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface PaymentDAO {
+public interface PaymentDAO extends SuperDAO{
    Enroll getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException;
 
    List<Payment> loadAllPayments() throws SQLException, ClassNotFoundException;

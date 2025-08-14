@@ -1,6 +1,6 @@
 package com.example.fxproject.bo.custom;
 
-import com.example.fxproject.model.EnrollQuotationDTO;
+import com.example.fxproject.entity.Enroll;
 import com.example.fxproject.model.PaymentDTO;
 import com.example.fxproject.model.EnrollDTO;
 
@@ -19,4 +19,5 @@ public interface PaymentBO extends SuperBO{
     int getPaymentCount() throws SQLException, ClassNotFoundException;
 
 
+    Enroll getQuotationDetails(String enrollId) throws SQLException, ClassNotFoundException;
 }

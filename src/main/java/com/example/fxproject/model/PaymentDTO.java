@@ -1,6 +1,5 @@
 package com.example.fxproject.model;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public class PaymentDTO {
@@ -12,6 +11,7 @@ public class PaymentDTO {
     private double advanceAmount;
     private String status;
     private Timestamp paymentDate;
+    private String paymentType;
 
     public PaymentDTO() {}
 
@@ -26,10 +26,7 @@ public class PaymentDTO {
         this.paymentDate = paymentDate;
     }
 
-    public PaymentDTO(Object paymentId, String enrollId, double amount, Object date, Object paymentType) {
-    }
-
-    // Getters and setters
+    // Getters & setters
     public int getInvoiceNumber() { return invoiceNumber; }
     public void setInvoiceNumber(int invoiceNumber) { this.invoiceNumber = invoiceNumber; }
     public String getEnrollId() { return enrollId; }
@@ -46,17 +43,6 @@ public class PaymentDTO {
     public void setStatus(String status) { this.status = status; }
     public Timestamp getPaymentDate() { return paymentDate; }
     public void setPaymentDate(Timestamp paymentDate) { this.paymentDate = paymentDate; }
-
-
-    public String getPaymentId() {
-        return getPaymentId().toString();
-    }
-
-    public Date getDate() {
-        return getDate();
-    }
-
-    public String getPaymentType() {
-        return getPaymentType().toString();
-    }
+    public String getPaymentType() { return paymentType; }
+    public void setPaymentType(String paymentType) { this.paymentType = paymentType; }
 }
