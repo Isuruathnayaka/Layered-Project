@@ -68,7 +68,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <TableView fx:id="table" layoutX="82.0" layoutY="299.0" prefHeight="244.0" prefWidth="1243.0" stylesheets="@../Ui%20Css/TableView.css">
+      <TableView fx:id="table" layoutX="82.0" layoutY="299.0" prefHeight="244.0" prefWidth="1243.0" stylesheets="@../css_file/TableView.css">
         <columns>
           <TableColumn fx:id="columnClientID" prefWidth="99.0" text="Client ID" />
           <TableColumn fx:id="columnName" prefWidth="208.0" text="                      Name" />
@@ -83,7 +83,7 @@
                <children>
                   <Button fx:id="generateBtn" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnGenerateReport" prefHeight="33.0" prefWidth="151.0" style="-fx-background-color: #778CA3;" text="Generate Report" textFill="WHITE" />
                   <Button fx:id="resetBtn" layoutX="188.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnReset" prefHeight="33.0" prefWidth="81.0" style="-fx-background-color: #FC5C65;" text="Reset" textFill="WHITE" />
-                  <Button fx:id="saveBtn" layoutX="503.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="33.0" prefWidth="77.0" style="-fx-background-color: #26DE81;" text="Save" textFill="WHITE" />
+                  <Button fx:id="saveBtn" layoutX="503.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="33.0" prefWidth="77.0" style="-fx-background-color: #26DE81;" stylesheets="@../css_file/ButtonStyle.css" text="Save" textFill="WHITE" />
                   <Button fx:id="updateBtn" layoutX="399.0" layoutY="10.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="34.0" prefWidth="77.0" style="-fx-background-color: #2D98DA;" text="Update" textFill="WHITE" />
                   <Button fx:id="deleteBtn" layoutX="297.0" layoutY="10.0" mnemonicParsing="false" onAction="#btnDeleete" prefHeight="33.0" prefWidth="70.0" style="-fx-background-color: #EB3B5A;" text="Delete" textFill="WHITE" />
                </children>

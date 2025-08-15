@@ -1,0 +1,78 @@
+/* ===== Global Font & Colors ===== */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: white;
+}
+
+/* ===== Statistic Cards ===== */
+.card {
+    -fx-background-radius: 20px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);
+}
+
+.card-yellow {
+    -fx-background-color: #FFD966;
+}
+
+.card-red {
+    -fx-background-color: #E74C3C;
+}
+
+.card-teal {
+    -fx-background-color: #1ABC9C;
+}
+
+.card-orange {
+    -fx-background-color: #F39C12;
+}
+
+/* Card Text */
+.card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(0,0,0,0.7);
+}
+
+.card-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* ===== Line Chart ===== */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2C3E50;
+}
+
+.chart-series-line {
+    -fx-stroke: #E67E22;
+    -fx-stroke-width: 3px;
+}
+
+.chart-line-symbol {
+    -fx-background-color: white, #E67E22;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 6px;
+}
+
+/* Axis styling */
+.axis {
+    -fx-tick-label-fill: #2C3E50;
+    -fx-font-size: 12px;
+}
+
+.axis-label {
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+}

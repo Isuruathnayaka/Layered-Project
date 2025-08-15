@@ -2,10 +2,10 @@ package com.example.fxproject.bo.custom.impl;
 
 import com.example.fxproject.bo.custom.PaymentBO;
 import com.example.fxproject.dao.PaymentDAO;
+import com.example.fxproject.model.EnrollQuotationDTO;
 import com.example.fxproject.model.PaymentDTO;
 import com.example.fxproject.model.EnrollDTO;
 import com.example.fxproject.entity.Payment;
-import com.example.fxproject.entity.Enroll;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PaymentBOImpl implements PaymentBO {
 
     @Override
     public EnrollDTO getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException {
-        Enroll enroll = paymentDAO.getQuotationDetailsByEnrollId(enrollId);
+        EnrollQuotationDTO enroll = paymentDAO.getQuotationDetailsByEnrollId(enrollId);
         if (enroll == null) return null;
 
         return new EnrollDTO(
@@ -86,7 +86,7 @@ public class PaymentBOImpl implements PaymentBO {
     }
 
     @Override
-    public Enroll getQuotationDetails(String enrollId) throws SQLException, ClassNotFoundException {
+    public EnrollQuotationDTO getQuotationDetails(String enrollId) throws SQLException, ClassNotFoundException {
         return paymentDAO.getQuotationDetailsByEnrollId(enrollId);
     }
 }

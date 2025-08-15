@@ -86,4 +86,9 @@ public class QuotationDAOImpl implements QuotationDAO {
         return null;
     }
 
+    @Override
+    public int getCount() throws Exception {
+        return 0;
+    }
+
 }

@@ -104,4 +104,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             );
         }else {return null;}
     }
+
+    @Override
+    public int getCount() throws Exception {
+        ResultSet rs = SQLUtil.executeQuery("SELECT COUNT(*) FROM employee");
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
     }
+}

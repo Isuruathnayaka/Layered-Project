@@ -23,6 +23,12 @@ public class Enroll {
     public Enroll(String quotationId, String clientName, double amount, String description) {
     }
 
+    public Enroll(String enrollId, String clientId, String name, String quotationId, Date date, String employeeId, Date startingDate, String description) {
+    }
+
+    public Enroll(String enrollId, String quotationId, String clientName, Date amount, String description) {
+    }
+
     public Object getAmount() {
         return null;
     }

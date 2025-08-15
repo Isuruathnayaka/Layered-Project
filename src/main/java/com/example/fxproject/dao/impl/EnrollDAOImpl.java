@@ -1,12 +1,11 @@
 package com.example.fxproject.dao.impl;
 
 import com.example.fxproject.dao.EnrollDAO;
-import com.example.fxproject.db.dbConnector;
+import com.example.fxproject.dao.SQLUtil;
 import com.example.fxproject.entity.Enroll;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 import static com.example.fxproject.db.dbConnector.getConnection;
@@ -14,8 +13,8 @@ import static com.example.fxproject.db.dbConnector.getConnection;
 public class EnrollDAOImpl implements EnrollDAO {
 
     @Override
-    public List<Enroll> getAll() throws SQLException, ClassNotFoundException {
-        List<Enroll> list = new ArrayList<>();
+    public ArrayList<Enroll> getAll() throws SQLException, ClassNotFoundException {
+        ArrayList<Enroll> list = new ArrayList<>();
         String sql = "SELECT * FROM enroll";
 
         try (Connection con = getConnection();
@@ -108,6 +107,15 @@ public class EnrollDAOImpl implements EnrollDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public int getCount() throws Exception {
+        ResultSet rs = SQLUtil.executeQuery("SELECT COUNT(*) FROM enroll");
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
     }
 
     @Override

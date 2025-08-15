@@ -3,9 +3,12 @@ package com.example.fxproject.bo.custom.impl;
 import com.example.fxproject.bo.custom.EnrollBo;
 import com.example.fxproject.dao.DAOFactory;
 import com.example.fxproject.dao.EnrollDAO;
+import com.example.fxproject.dao.SQLUtil;
 import com.example.fxproject.entity.Enroll;
+import com.example.fxproject.model.ClientDTO;
 import com.example.fxproject.model.EnrollDTO;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,4 +117,14 @@ public class EnrollBoImpl implements EnrollBo {
         ) : null;
     }
 
-}
+    @Override
+    public ClientDTO getClientDetailsById(String clientId) throws SQLException, ClassNotFoundException {
+        ResultSet rs = SQLUtil.executeQuery("SELECT name, contact FROM client WHERE client_id = ?", clientId);
+        if (rs.next()) {
+            return new ClientDTO(rs.getString("name"), rs.getString("contact"));
+        }
+        return null;
+    }
+    }
+
+

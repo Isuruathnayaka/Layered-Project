@@ -1,13 +1,13 @@
 package com.example.fxproject.dao;
 
 import com.example.fxproject.entity.Payment;
-import com.example.fxproject.entity.Enroll;
+import com.example.fxproject.model.EnrollQuotationDTO;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface PaymentDAO extends SuperDAO{
-   Enroll getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException;
+   EnrollQuotationDTO getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException;
 
    List<Payment> loadAllPayments() throws SQLException, ClassNotFoundException;
 
@@ -18,4 +18,7 @@ public interface PaymentDAO extends SuperDAO{
    boolean payFull(Payment payment) throws SQLException, ClassNotFoundException;
 
    int getPaymentCount() throws SQLException, ClassNotFoundException;
+   EnrollQuotationDTO getQuotationDetails(String enrollId) throws SQLException, ClassNotFoundException;
+
+   int getCount();
 }

@@ -68,7 +68,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <TableView fx:id="tableEnroll" layoutX="-1.0" layoutY="305.0" prefHeight="235.0" prefWidth="1344.0" stylesheets="@../Ui%20Css/TableView.css">
+      <TableView fx:id="tableEnroll" layoutX="-1.0" layoutY="305.0" prefHeight="235.0" prefWidth="1344.0" stylesheets="@../css_file/TableView.css">
         <columns>
           <TableColumn fx:id="colEnrollid" prefWidth="75.0" text="Enroll ID" />
           <TableColumn fx:id="colClientID" prefWidth="90.0" text="Client ID" />

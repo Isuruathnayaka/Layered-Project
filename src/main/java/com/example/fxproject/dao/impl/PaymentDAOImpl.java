@@ -1,10 +1,13 @@
 package com.example.fxproject.dao.impl;
 
 import com.example.fxproject.dao.PaymentDAO;
+import com.example.fxproject.db.dbConnector;
 import com.example.fxproject.entity.Payment;
-import com.example.fxproject.entity.Enroll;
 import com.example.fxproject.dao.SQLUtil;
+import com.example.fxproject.model.EnrollQuotationDTO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,9 +16,9 @@ import java.util.List;
 public class PaymentDAOImpl implements PaymentDAO {
 
     @Override
-    public Enroll getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException {
+    public EnrollQuotationDTO getQuotationDetailsByEnrollId(String enrollId) throws SQLException, ClassNotFoundException {
         ResultSet rs = SQLUtil.executeQuery(
-                "SELECT e.enroll_id, e.client_id, c.name, c.contact, e.quotation_id, e.date, e.employee_id, e.starting_date, q.description " +
+                "SELECT e.quotation_id, c.name AS client_name, q.amount, q.description " +
                         "FROM enroll e " +
                         "JOIN client c ON e.client_id = c.client_id " +
                         "JOIN quotation q ON e.quotation_id = q.quotation_id " +
@@ -24,17 +27,13 @@ public class PaymentDAOImpl implements PaymentDAO {
         );
 
         if (rs.next()) {
-            return new Enroll(
-                    rs.getString("enroll_id"),
-                    rs.getString("client_id"),
-                    rs.getString("name"),
-                    rs.getString("contact"),
-                    rs.getString("quotation_id"),
-                    rs.getDate("date"),
-                    rs.getString("employee_id"),
-                    rs.getDate("starting_date"),
-                    rs.getString("description")
-            );
+            EnrollQuotationDTO dto = new EnrollQuotationDTO();
+            dto.setEnrollId(enrollId);
+            dto.setQuotationId(rs.getString("quotation_id"));
+            dto.setClientName(rs.getString("client_name"));
+            dto.setAmount(rs.getDouble("amount"));       // now comes from quotation table
+            dto.setDescription(rs.getString("description"));
+           return dto;
         }
         return null;
     }
@@ -114,4 +113,35 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
         return 0;
     }
+
+    @Override
+    public EnrollQuotationDTO getQuotationDetails(String enrollId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT e.enroll_id, e.quotation_id, c.name AS client_name, e.amount, e.description " +
+                "FROM enroll e " +
+                "JOIN client c ON e.client_id = c.client_id " +
+                "WHERE e.enroll_id = ?";
+
+        Connection conn = dbConnector.getConnection();
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1, enrollId);
+
+        ResultSet rs = pstm.executeQuery();
+
+        if (rs.next()) {
+            EnrollQuotationDTO dto = new EnrollQuotationDTO();
+            dto.setEnrollId(rs.getString("enroll_id"));
+            dto.setQuotationId(rs.getString("quotation_id"));
+            dto.setClientName(rs.getString("client_name"));
+            dto.setAmount(rs.getDouble("amount"));
+            dto.setDescription(rs.getString("description"));
+            return dto;
+        }
+        return null;
+    }
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
 }
+

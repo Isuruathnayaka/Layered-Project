@@ -3,10 +3,10 @@ package com.example.fxproject.dao;
 import com.example.fxproject.entity.Enroll;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
-public interface EnrollDAO extends SuperDAO {
-    List<Enroll> getAll() throws SQLException, ClassNotFoundException;
+public interface EnrollDAO extends CrudDAO<Enroll> {
+    ArrayList<Enroll> getAll() throws SQLException, ClassNotFoundException;
     boolean save(Enroll enroll) throws SQLException, ClassNotFoundException;
     boolean update(Enroll enroll) throws SQLException, ClassNotFoundException;
     boolean delete(String enrollId) throws SQLException, ClassNotFoundException;

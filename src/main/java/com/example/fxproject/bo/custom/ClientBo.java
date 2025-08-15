@@ -18,7 +18,7 @@ public interface ClientBo extends SuperBO {
 
     boolean existClient(String id) throws SQLException, ClassNotFoundException;
 
-    //public boolean existClient(String id) throws SQLException, ClassNotFoundException;
+
     public boolean deleteClient(String id) throws SQLException, ClassNotFoundException;
 
 

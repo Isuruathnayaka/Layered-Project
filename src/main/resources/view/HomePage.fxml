@@ -99,7 +99,7 @@
          <children>
             <ImageView fx:id="imageView" fitHeight="601.0" fitWidth="1354.0">
                <image>
-                  <Image url="@../images/Non%20Text%20Magic%20Studio%20Magic%20Design%20for%20Presentations%20L&amp;P.png" />
+                  <Image url="@../Images/Non%20Text%20Magic%20Studio%20Magic%20Design%20for%20Presentations%20L&amp;P.png" />
                </image>
             </ImageView>
             <AnchorPane layoutY="4.0" prefHeight="593.0" prefWidth="1354.0">
@@ -132,7 +132,7 @@
          <children>
             <ImageView fitHeight="253.0" fitWidth="253.0" layoutX="56.0" layoutY="-31.0">
                <image>
-                  <Image url="@../images/Logo-Photoroom.png" />
+                  <Image url="@../Images/Logo-Photoroom.png" />
                </image>
             </ImageView>
             <FlowPane layoutX="82.0" layoutY="137.0" prefHeight="6.0" prefWidth="200.0" style="-fx-background-color: #fff;" />

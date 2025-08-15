@@ -1,5 +1,6 @@
 package com.example.fxproject.bo.custom;
 
+import com.example.fxproject.model.ClientDTO;
 import com.example.fxproject.model.EnrollDTO;
 
 import java.sql.SQLException;
@@ -14,4 +15,6 @@ public interface EnrollBo extends SuperBO {
     String generateNewEnrollId() throws SQLException, ClassNotFoundException;
 
     EnrollDTO searchLatestEnrollByClientId(String clientId) throws SQLException;
+
+    ClientDTO getClientDetailsById(String clientId) throws SQLException, ClassNotFoundException;
 }

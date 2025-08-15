@@ -16,7 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.util.Duration;
 
-import javax.swing.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
@@ -53,7 +53,7 @@ public class HomePageController implements Initializable {
     public FlowPane flowpaneManageEmployee;
     public FlowPane flowpaneEnroll;
     public TextField txtDesktopsearchbar;
-    private ImageIcon imgSlideShow;
+
     private int currentIndex = 0;
 
     private final String[] imagePaths = {
@@ -263,6 +263,13 @@ public class HomePageController implements Initializable {
 
     public void btnPayments(ActionEvent actionEvent) {
         navigateTo("/view/payment.fxml", ancMainLoader);
+    }
+
+    public void btnFacebookIcon(ActionEvent actionEvent) {
+    }
+
+    public void btnGmail(ActionEvent actionEvent) {
+        
     }
 }
 

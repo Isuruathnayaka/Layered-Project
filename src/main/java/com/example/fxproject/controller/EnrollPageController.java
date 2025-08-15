@@ -2,6 +2,7 @@ package com.example.fxproject.controller;
 
 import com.example.fxproject.bo.custom.BOFactory;
 import com.example.fxproject.bo.custom.EnrollBo;
+import com.example.fxproject.model.ClientDTO;
 import com.example.fxproject.model.EnrollDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -109,18 +110,29 @@ public class EnrollPageController implements Initializable {
         }
 
         try {
+            // Try to get latest enrollment
             EnrollDTO enrollDTO = enrollBo.searchLatestEnrollByClientId(clientId);
 
             if (enrollDTO != null) {
+                // Enrollment exists, load details
                 txtClientName.setText(enrollDTO.getClientName());
                 txtContact.setText(enrollDTO.getContact());
                 txtQuatationID.setText(enrollDTO.getQuotationId());
-                txtEnrollDate.setText(String.valueOf(enrollDTO.getDate()));
-
+                txtEnrollDate.setText(enrollDTO.getDate() != null ? String.valueOf(enrollDTO.getDate()) : "");
             } else {
-                clearClientFields();
-                new Alert(Alert.AlertType.WARNING, "Client not found").show();
+                // Enrollment not found, load basic client info
+                ClientDTO clientDTO = enrollBo.getClientDetailsById(clientId); // NEW method in BO/DAO
+                if (clientDTO != null) {
+                    txtClientName.setText(clientDTO.getName());
+                    txtContact.setText(clientDTO.getContact());
+                    txtQuatationID.clear();
+                    txtEnrollDate.clear();
+                } else {
+                    clearClientFields();
+                    new Alert(Alert.AlertType.WARNING, "Client not found").show();
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading client data").show();

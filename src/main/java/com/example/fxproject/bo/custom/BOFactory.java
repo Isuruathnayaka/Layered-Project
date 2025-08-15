@@ -17,24 +17,24 @@ public class BOFactory {
     }
 
     public enum BOType {
-        CLIENT, EMPLOYEE, QUOTATION,ENROLL,PAYMENT
+        CLIENT, EMPLOYEE, QUOTATION,ENROLL, DASHBOARD, PAYMENT
     }
 
     public SuperBO getBO(BOType boType) {
         switch (boType) {
             case CLIENT -> {
-                // Get the DAO instance from DAOFactory
+
                 ClientDAO clientDAO = (ClientDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.CLIENT);
-                // Inject DAO into BO
+
                 return new ClientBOImpl(clientDAO);
             }
             case EMPLOYEE -> {
                 EmployeeDAO employeeDAO = (EmployeeDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.EMPLOYEE);
-                return new EmployeeBoImpl(employeeDAO); // Will be implemented later
+                return new EmployeeBoImpl(employeeDAO);
             }
             case QUOTATION -> {
                 QuotationDAO quotationDAO=(QuotationDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.QUOTATION);
-                return new QuotationBoImpl(quotationDAO); // Will be implemented later
+                return new QuotationBoImpl(quotationDAO);
             }
             case ENROLL -> {
                 EnrollDAO enrollDAO=(EnrollDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.ENROLL);
@@ -44,6 +44,9 @@ public class BOFactory {
             case PAYMENT -> {
                 PaymentDAO paymentDAO= (PaymentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PAYMENT);
                 return new PaymentBOImpl(paymentDAO);
+            }
+            case DASHBOARD -> {
+                return  new DashboardBOImpl();
             }
             default -> {
                 return null;

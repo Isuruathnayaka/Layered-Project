@@ -32,6 +32,9 @@ module com.example.fxproject {
     requires javafx.fxml;
     requires static lombok;
     requires java.sql;
+    requires mysql.connector.j;
+    requires com.google.protobuf;
+    requires jakarta.mail;
     requires java.desktop;
 
     opens com.example.fxproject.controller to javafx.fxml;

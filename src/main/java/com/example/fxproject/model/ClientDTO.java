@@ -25,6 +25,9 @@ public class ClientDTO {
 
     }
 
+    public ClientDTO(String name, String contact) {
+    }
+
     public String getName(){
         return clientName;
     }
@@ -35,5 +38,9 @@ public class ClientDTO {
 
     public Object getId() {
         return clientID;
+    }
+
+    public String getContact() {
+        return phone;
     }
 }

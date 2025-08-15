@@ -94,5 +94,14 @@ public class ClientDAOImpl implements ClientDAO {
         }
     }
 
+    @Override
+    public int getCount() throws Exception {
+        ResultSet rs = SQLUtil.executeQuery("SELECT COUNT(*) FROM client");
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+
 
 }

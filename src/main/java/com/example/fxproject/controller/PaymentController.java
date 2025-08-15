@@ -18,7 +18,6 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -50,18 +49,18 @@ public class PaymentController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Load quotation details on Enter key press
         txtEnrollID.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 try {
                     loadQuotationDetails();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
+                } catch (SQLException | ClassNotFoundException e) {
+                    showAlert(Alert.AlertType.ERROR, "Error loading quotation: " + e.getMessage());
                 }
             }
         });
 
+        // Set table columns
         tabInvoiceID.setCellValueFactory(new PropertyValueFactory<>("invoiceNumber"));
         tabEnrollID.setCellValueFactory(new PropertyValueFactory<>("enrollId"));
         tabQuoID.setCellValueFactory(new PropertyValueFactory<>("quotationId"));
@@ -74,20 +73,22 @@ public class PaymentController implements Initializable {
         loadPaymentTable();
     }
 
+    // Load quotation details into text fields
     private void loadQuotationDetails() throws SQLException, ClassNotFoundException {
         String enrollId = txtEnrollID.getText().trim();
         if (enrollId.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Please enter an Enroll ID.");
             return;
         }
-        Enroll dto = paymentBO.getQuotationDetails(enrollId);
+
+        EnrollQuotationDTO dto = paymentBO.getQuotationDetails(enrollId);
         if (dto != null) {
             txtQuotationID.setText(dto.getQuotationId());
             txtClientName.setText(dto.getClientName());
             txtAmount.setText(String.valueOf(dto.getAmount()));
             txtDescription.setText(dto.getDescription());
         } else {
-            showAlert(Alert.AlertType.WARNING, "No data found for this Enroll ID");
+            showAlert(Alert.AlertType.WARNING, "No quotation found for this Enroll ID.");
             clearFieldsExceptEnroll();
         }
     }
@@ -97,7 +98,7 @@ public class PaymentController implements Initializable {
             List<PaymentDTO> list = paymentBO.loadAllPayments();
             tablePayment.setItems(FXCollections.observableArrayList(list));
         } catch (SQLException | ClassNotFoundException e) {
-            showAlert(Alert.AlertType.ERROR, "Failed to load payments!");
+            showAlert(Alert.AlertType.ERROR, "Failed to load payments: " + e.getMessage());
         }
     }
 
@@ -187,5 +188,6 @@ public class PaymentController implements Initializable {
     }
 
     public void btnGenerateReport(ActionEvent actionEvent) {
+        // Implement report generation
     }
 }
